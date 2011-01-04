@@ -1,0 +1,50 @@
+\name{raster-methods}
+
+\docType{methods}
+
+\alias{raster,TransitionLayer-method}
+
+\title{ RasterLayer from TransitionLayer object }
+\description{
+Create a RasterLayer from a TransitionLayer with a call to the generic function \code{raster}.
+
+The n x n transition matrix of the TransitionLayer is transformed to form the values n cells of a raster.
+
+The following methods to \sQuote{reduce} the transition matrix are available with the optional argument \code{reduceMethod}):
+\itemize{
+\item{colSums}
+\item{rowSums}
+\item{colMeans}
+\item{rowMeans}
+\item{NZcolMeans}
+\item{NZrowMeans}
+}
+  The latter two methods only take into account the non-zero entries in the transition matrix.
+  
+  The default is NZcolMeans.
+}
+
+\value{
+RasterLayer
+}
+
+\author{ Jacob van Etten \email{jacobvanetten@yahoo.com}}
+
+\examples{
+#create a new raster and set all its values to unity.
+r <- raster(nrows=18, ncols=36) 
+r <- setValues(r,runif(ncell(r),0,1))
+
+#create a Transition object from the raster
+tr1 <- transition(r,mean,8)
+
+#asymmetric
+asf <- function(x) max(x) - x[1] + x[2]
+tr2 <- transition(r,asf,8, symm=FALSE)
+
+#create RasterLayer objects
+r1 <- raster(tr1)
+r2 <- raster(tr2)
+r3 <- raster(tr1, "colMeans")
+}
+\keyword{ spatial }

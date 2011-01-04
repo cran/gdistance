@@ -1,0 +1,11 @@
+import(Matrix) 
+import(igraph)
+importClassesFrom(sp, SpatialPoints, SpatialPointsDataFrame,
+SpatialPixels, SpatialGrid, SpatialPixelsDataFrame, SpatialGridDataFrame)
+importClassesFrom(raster, BasicRaster, Raster)
+importFrom(raster, nlayers, stack, raster)
+
+importFrom(methods, Ops, Arith, Compare, Logic)
+exportClasses(TransitionLayer, TransitionStack, Coords)
+exportPattern("^[^\\.]")
+exportMethods(initialize, show, coerce, Ops, Arith, Compare, Logic, "[", "[<-", accCost, costDistance, geoCorrection, normalize, pathInc, passage, transition, resistanceDistance, shortestPath)

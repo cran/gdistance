@@ -1,0 +1,134 @@
+# Author: Jacob van Etten, jacobvanetten@yahoo.com
+# International Rice Research Institute
+# Date :  January 2009
+# Version 1.0
+# Licence GPL v3
+
+.adjacency.from.transition <- function(transition)
+{
+	transitionMatr <- as(transition,"sparseMatrix")
+	transition.dgT <- as(transitionMatr,"dgTMatrix")
+	adjacency <- cbind(transition.dgT@i+1,transition.dgT@j+1)
+	return(adjacency)
+}
+
+.coordsToMatrix <- function(Coords)
+{
+	if(class(Coords) == "numeric")
+	{
+		if(length(Coords) == 2) {Coords <- t(as.matrix(Coords))} 
+		else{stop("coordinates given as a vector, but the vector does not have a length of two")}
+	}
+	
+	if(class(Coords) == "matrix")
+	{
+		if(!(ncol(Coords) == 2)){stop("coordinates given as a matrix, but the matrix does not have two columns")}
+	}	
+
+	if(inherits(Coords, "SpatialPoints"))  
+	{
+		Coords <- coordinates(Coords)
+	}
+	return(Coords)
+}
+
+.connected.components <- function(transition)
+{
+	adj.graph <- graph.adjacency(transition@transitionMatrix)
+	clustermembership <- cbind(1:ncell(transition),as.integer(clusters(adj.graph)$membership)+1)
+	return(clustermembership)
+}
+
+.current <- function(L, Lr, A, n, indexFrom, indexTo) 
+{
+	C <- 1e-300 * n #This should avoid too big floating points as "Voltage differences"
+	e <- matrix(0, ncol=1, nrow=n)
+	e[indexFrom,] <- C
+ 	e[indexTo,] <- -C
+	x <- solve(Lr,e)
+	x <- as.vector(x)
+	Lplusallrows <- c(x,x[length(x)]) / C
+	V1 <- A * Lplusallrows
+	V2 <- t(t(A) * Lplusallrows)
+	V <- abs(V1 - V2)
+	Current <- colSums(V * -L)/2 #I = V * Conductance
+	Current[indexFrom] <- 1
+	Current[indexTo] <- 1
+	return(Current)
+}
+
+.currentR <- function(L, Lr, A, n, indexFrom, indexTo)
+{
+	lf <- length(indexFrom)
+	lt <- length(indexTo)
+	C <- 1e-300 * n
+	Cf <- C / lf #This should avoid too big floating points as "Voltage differences"
+	Ct <- C / lt
+	e <- matrix(0, ncol=1, nrow=n)
+	e[indexFrom,] <- Cf
+ 	e[indexTo,] <- -Ct
+	x <- solve(Lr,e)
+	x <- as.vector(x)
+	Lplusallrows <- c(x,x[length(x)]) / C
+	V1 <- A * Lplusallrows
+	V2 <- t(t(A) * Lplusallrows)
+	V <- abs(V1 - V2)
+	Current <- colSums(V * -L)/2 #I = V * Conductance
+	Current[indexFrom] <- 1
+	Current[indexTo] <- 1
+	return(Current)
+}
+
+.potential <- function(L, Lr, A, n, indexFrom, indexTo) 
+{
+	C <- 1e-300 * n #This should avoid too big floating points as "Voltage differences"
+	e <- matrix(0, ncol=1, nrow=n)
+	e[indexFrom,] <- C
+ 	e[indexTo,] <- -C
+	x <- solve(Lr,e)
+	x <- as.vector(x)
+	Lplusallrows <- c(x,x[length(x)]) / C
+	V1 <- A * Lplusallrows
+	V2 <- t(t(A) * Lplusallrows)
+	V <- abs(V1 - V2)
+	return(V)
+}
+
+.currentM <- function(L, Lr, A, n, indexFrom, indexTo, index) 
+{
+	C <- 1e-300 * n #This should avoid too big floating points as "Voltage differences"
+	e <- matrix(0, ncol=1, nrow=n)
+	e[indexFrom,] <- C
+ 	e[indexTo,] <- -C
+	x <- solve(Lr,e)
+	x <- as.vector(x)
+	Lplusallrows <- c(x,x[length(x)]) / C
+	V1 <- A * Lplusallrows
+	V2 <- t(t(A) * Lplusallrows)
+	V <- abs(V1 - V2)
+	Current <- V[index] * -L[index] #I = V * Conductance
+	return(Current)
+}
+
+.Laplacian <- function(transition) 
+{
+	Laplacian <- Diagonal(x = colSums(transitionMatrix(transition))) - transitionMatrix(transition)
+	Laplacian <- as(Laplacian, "symmetricMatrix")
+	return(Laplacian)
+}
+
+.transitionSolidify <- function(transition)
+{
+	transitionMatr <- as(transition,"sparseMatrix")
+	selection <- which(rowMeans(transitionMatr)>1e-40)
+	transition@transitionCells <- (1:ncell(transition))[selection]
+	transitionMatr <- transitionMatr[selection,selection]
+	transitionMatrix(transition) <- transitionMatr
+	return(transition)
+}
+
+# International Rice Research Institute
+# Date :  March 2010
+# Version beta
+# Licence GPL v3
+
