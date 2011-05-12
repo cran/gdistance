@@ -83,8 +83,9 @@ setMethod ("show" , "TransitionLayer",
 setMethod ("show" , "TransitionStack",
        function(object) {
                callNextMethod(object)
-               cat("values      :", matrixValues(object), "\n")
-               cat("matrix class:", class(transitionMatrix(object)), "\n")
+ 			   cat("layers      :", length(object@transition), "\n")              
+			   #cat("values      :", matrixValues(object), "\n")
+               #cat("matrix class:", class(transitionMatrix(object)), "\n")
        }
 )
 

@@ -4,14 +4,6 @@
 # Version 1.0
 # Licence GPL v3
 
-.adjacency.from.transition <- function(transition)
-{
-	transitionMatr <- as(transition,"sparseMatrix")
-	transition.dgT <- as(transitionMatr,"dgTMatrix")
-	adjacency <- cbind(transition.dgT@i+1,transition.dgT@j+1)
-	return(adjacency)
-}
-
 .coordsToMatrix <- function(Coords)
 {
 	if(class(Coords) == "numeric")
@@ -125,6 +117,21 @@
 	transitionMatr <- transitionMatr[selection,selection]
 	transitionMatrix(transition) <- transitionMatr
 	return(transition)
+}
+
+#determine place in dist vector given place in dist matrix -- from gdistanalyst
+.distIndex <- function(i,j,n){n*(j-1) - j*(j-1)/2 + i-j}
+
+#determine place in dist matrix given place in dist vector -- from gdistanalyst -- should be possible speed up!
+.matrIndex <- function(i,n){
+	cc <- cumsum(seq((n-1),1))
+	out <- matrix(nrow=length(i),ncol=2)
+	for(index in 1:length(i))
+	{
+		out[index,2] <- min(which((cc-i[index])>=0))
+		out[index,1] <- -c(0,cc)[out[index,2]] + i[index] + out[index,2]
+	}
+	return(out)
 }
 
 # International Rice Research Institute

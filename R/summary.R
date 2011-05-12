@@ -11,7 +11,18 @@ if (!isGeneric("summary")) {
 
 setMethod('summary', signature(object='TransitionLayer'), 
 	function(object, ...) {
-		stop("Not yet implemented")
+		summary(transitionMatrix(object))
 	}
 )
 
+setMethod('summary', signature(object='TransitionStack'), 
+	function(object, ...) {
+		n <- nlayers(object)
+		result <- vector("list", length=n)
+		for(i in 1:n)
+		{
+			result[i] <- summary(object@transition[i]@transitionMatrix)
+		}
+		return(result)
+	}
+)

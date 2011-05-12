@@ -10,7 +10,8 @@
 \alias{transitionCells,TransitionLayer-method}
 \alias{matrixValues,TransitionLayer-method}
 \alias{matrixValues<-,TransitionLayer,character-method}
-
+\alias{matrixValues,TransitionStack-method}
+\alias{matrixValues<-,TransitionStack,character-method}
 \alias{transitionData,TransitionLayer-method}
 \alias{transitionData,TransitionStack-method}
 \alias{transitionMatrix,TransitionData-method}

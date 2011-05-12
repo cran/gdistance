@@ -7,20 +7,20 @@
 
 setGeneric("geoCorrection", function(transition, type, ...) standardGeneric("geoCorrection"))
 
-setMethod("geoCorrection", signature(transition = "TransitionLayer", type="missing"), def = function(transition, multpl=FALSE, scl=TRUE)
+setMethod("geoCorrection", signature(transition = "TransitionLayer", type="missing"), def = function(transition, multpl=FALSE, scl=FALSE)
 	{
 		return(geoCorrection(transition, type="c", multpl, scl))
 	}
 )
 
 
-setMethod("geoCorrection", signature(transition = "TransitionLayer", type="character"), def = function(transition, type, multpl=FALSE, scl=TRUE)
+setMethod("geoCorrection", signature(transition = "TransitionLayer", type="character"), def = function(transition, type, multpl=FALSE, scl=FALSE)
 	{
 		if(isLonLat(transition))
 		{
 			if (type != "c" & type != "r"){stop("type can only be c or r")}
 			if (type == "r" & matrixValues(transition) != "conductance"){stop("matrix of Transition object must have conductance values")}
-			adjacency <- .adjacency.from.transition(transition)
+			adjacency <- adjacencyFromTransition(transition)
 			correction <- cbind(xyFromCell(transition,adjacency[,1]),xyFromCell(transition,adjacency[,2]))
 			if(scl)
 			{
@@ -40,7 +40,7 @@ setMethod("geoCorrection", signature(transition = "TransitionLayer", type="chara
 				correctionValues[rows] <- correctionValues[rows] * corrFactor #makes conductance lower in N-S direction towards the poles
 			}
 		} else {
-			adjacency <- .adjacency.from.transition(transition)
+			adjacency <- adjacencyFromTransition(transition)
 			correction <- cbind(xyFromCell(transition,adjacency[,1]),xyFromCell(transition,adjacency[,2]))
 			if(scl)
 			{

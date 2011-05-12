@@ -14,7 +14,7 @@ Package: \tab gdistance\cr
 Type: \tab Package\cr
 Version: \tab 1.1-1\cr
 Date: \tab 2011-01-04\cr
-License: \tab GPL-3\cr
+License: \tab GPL (>=3)\cr
 LazyLoad: \tab yes\cr
 }
 Distances can be calculated following these steps. 

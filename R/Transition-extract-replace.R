@@ -28,7 +28,7 @@ setReplaceMethod ("transitionMatrix", signature(transition = "TransitionLayer", 
 	}
 )
 
-setGeneric("transitionCells", function(transition = "TransitionLayer") standardGeneric("transitionCells"))
+setGeneric("transitionCells", function(transition) standardGeneric("transitionCells"))
 
 setMethod ("transitionCells", signature(transition = "TransitionLayer"),
 	function(transition){
@@ -37,9 +37,15 @@ setMethod ("transitionCells", signature(transition = "TransitionLayer"),
 	}
 )
 
-setGeneric("matrixValues", function(transition = "TransitionLayer") standardGeneric("matrixValues"))
+setGeneric("matrixValues", function(transition) standardGeneric("matrixValues"))
 
 setMethod ("matrixValues", signature(transition = "TransitionLayer"),
+	function(transition){
+		transition@matrixValues
+	}
+)
+
+setMethod ("matrixValues", signature(transition = "TransitionStack"),
 	function(transition){
 		transition@matrixValues
 	}

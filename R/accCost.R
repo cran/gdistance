@@ -14,7 +14,7 @@ setMethod("accCost", signature(transition = "TransitionLayer", fromCoords = "Coo
 			warning("some coordinates not found and omitted")
 			fromCells <- fromCells[!is.na(fromCells)]
 		}
-			tr <- transitionMatrix(transition)
+		tr <- transitionMatrix(transition)
 		tr <- rBind(tr,rep(0,nrow(tr)))
 		tr <- cBind(tr,rep(0,nrow(tr)))
 	

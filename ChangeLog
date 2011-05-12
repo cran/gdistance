@@ -1,0 +1,7 @@
+--- version 1.1.2, September 2011
+
+Bug fix in transition(transitionFunction="barriers")
+Methods added in transition()
+Summary functions redefined
+Adapting to changes in raster package (argument for Raster* objects is now always "x")
+adjacencyFromTransition added

@@ -47,22 +47,28 @@ raster <- setValues(raster,rep(1,ncell(raster)))
 
 #create a Transition object from the raster
 tr <- transition(raster,mean,4)
-trC <- geoCorrection(tr, type="c")
-trR <- geoCorrection(tr, type="r")
+trC <- geoCorrection(tr, type="c", scl=TRUE)
+trR <- geoCorrection(tr, type="r", scl=TRUE)
 
 #create two coordinates
 sP1 <- SpatialPoints(cbind(-105,55))
 sP2 <- SpatialPoints(cbind(105,-55))
 
 #randomised shortest paths with theta = 2
-rSPraster <- passage(tr, sP1, sP2, 2)
+rSPraster <- passage(trC, sP1, sP2, 2)
 plot(rSPraster)
 points(sP1)
 points(sP2)
 
 #randomised shortest paths with theta = 0.05
-#leaves the origin and often passes it again before arriving
 rSPraster <- passage(trC, sP1, sP2, 0.05)
+plot(rSPraster) 
+points(sP1)
+points(sP2)
+
+#randomised shortest paths with theta = 0.05
+#and total
+rSPraster <- passage(trC, sP1, sP2, 0.05, totalNet = "total")
 plot(rSPraster) 
 points(sP1)
 points(sP2)

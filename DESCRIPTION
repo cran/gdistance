@@ -1,21 +1,23 @@
 Package: gdistance
 Type: Package
 Title: distances and routes on geographical grids
-Version: 1.1-1
-Date: 4-January-2011
+Version: 1.1-2
+Date: 12-May-2011
 Author: Jacob van Etten
-Depends: R (>= 2.8.0), raster (>= 1.7-21), igraph, Matrix, methods, sp
+Depends: R (>= 2.8.0), raster (>= 1.9-19), igraph (< 0.6), Matrix,
+        methods, sp
 Maintainer: Jacob van Etten <jacobvanetten@yahoo.com>
 Description: Calculate distances and routes on geographic grids.
-License: GPL-3
-Collate: Transition-class.R Coords-class.R Transition-extract-replace.R
-        Transition-methods.R internal-functions.R transition.R
-        costDistance.R accCost.R probPassage.R geoCorrection.R
-        normalize.R resistanceDistance.R rasterFromTransition.R
-        pathInc.R sumT.R shortestPath.R stack.R summary.R
+License: GPL (>= 3)
+Collate: adjacency.R Transition-class.R Coords-class.R
+        Transition-extract-replace.R Transition-methods.R
+        internal-functions.R transition.R costDistance.R accCost.R
+        probPassage.R geoCorrection.R normalize.R resistanceDistance.R
+        rasterFromTransition.R pathInc.R sumT.R shortestPath.R stack.R
+        summary.R Summary-methods.R
 LazyLoad: yes
 Repository: CRAN
 Repository/R-Forge/Project: gdistance
-Repository/R-Forge/Revision: 189
-Date/Publication: 2011-01-09 13:58:59
-Packaged: 2011-01-08 21:59:07 UTC; rforge
+Repository/R-Forge/Revision: 199
+Date/Publication: 2011-09-30 05:51:48
+Packaged: 2011-09-28 21:09:49 UTC; rforge

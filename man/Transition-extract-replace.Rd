@@ -11,6 +11,8 @@
 \description{
 Methods for functions \code{[} and \code{[<-} for object of the class TransitionLayer.
 Methods for functions \code{[[} and \code{[[<-} for object of the class TransitionStack.
+
+Also see \code{\link[gdistance]{adjacencyFromTransition}}.
 }
 \examples{
   #Create a new raster and set all its values to unity.

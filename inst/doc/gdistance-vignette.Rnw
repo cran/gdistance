@@ -403,7 +403,7 @@ Therefore, we need to restrict the calculation to adjacent cells.
 We do this by creating an index for adjacent cells (\verb@adj@) with the function \verb@adjacency()@.
 Using this index, we extract and replace adjacent cells, without touching the other values.
 <<gdistance-18>>=
-adj <- adjacency(raster=r, fromCells = 1:ncell(r), toCells = 1:ncell(r), directions=8)
+adj <- adjacency(x = r, fromCells = 1:ncell(r), toCells = 1:ncell(r), directions=8)
 speed <- slope
 speed[adj] <- exp(-3.5 * abs(slope[adj] + 0.05))
 @
