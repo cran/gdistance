@@ -4,17 +4,17 @@
 # Version 1.0
 # Licence GPL v3
 
-setGeneric("accCost", function(transition, fromCoords) standardGeneric("accCost"))
+setGeneric("accCost", function(x, fromCoords) standardGeneric("accCost"))
 
-setMethod("accCost", signature(transition = "TransitionLayer", fromCoords = "Coords"), def = function(transition, fromCoords)
+setMethod("accCost", signature(x = "TransitionLayer", fromCoords = "Coords"), def = function(x, fromCoords)
 	{
 		fromCoords <- .coordsToMatrix(fromCoords) 
-		fromCells <- cellFromXY(transition, fromCoords)
+		fromCells <- cellFromXY(x, fromCoords)
 		if(!all(!is.na(fromCells))){
 			warning("some coordinates not found and omitted")
 			fromCells <- fromCells[!is.na(fromCells)]
 		}
-		tr <- transitionMatrix(transition)
+		tr <- transitionMatrix(x)
 		tr <- rBind(tr,rep(0,nrow(tr)))
 		tr <- cBind(tr,rep(0,nrow(tr)))
 	
@@ -28,7 +28,7 @@ setMethod("accCost", signature(transition = "TransitionLayer", fromCoords = "Coo
 	
 		shortestPaths <- shortest.paths(adjacencyGraph, v=startNode-1)[-startNode]
 
-		result <- as(transition, "RasterLayer")
+		result <- as(x, "RasterLayer")
 		result <- setValues(result, shortestPaths)	
 		return(result)
 	}

@@ -11,8 +11,9 @@ setMethod("Arith", signature(e1 = "TransitionLayer", e2 = "TransitionLayer"),
 		{
 			if(as(e1, "BasicRaster") == as(e2, "BasicRaster"))
 				{
-					matrix.dsC <- callGeneric(as(e1,"sparseMatrix"),as(e2,"sparseMatrix"))
+					matrix.dsC <- callGeneric(transitionMatrix(e1),transitionMatrix(e2))
 					transitionMatrix(e1) <- matrix.dsC
+					e1@transitionCells <- 1:ncell(e1)
 					return(e1)
 				}
 			else {stop("objects do not coincide in resolution, extent and/or projection")}
@@ -22,7 +23,7 @@ setMethod("Arith", signature(e1 = "TransitionLayer", e2 = "TransitionLayer"),
 setMethod("Arith", signature(e1 = "TransitionLayer", e2 = "ANY"),
 		function(e1, e2)
 		{
-			matrix.dsC <- callGeneric(as(e1,"sparseMatrix"),e2)
+			matrix.dsC <- callGeneric(transitionMatrix(e1,inflate=FALSE),e2)
 			transitionMatrix(e1) <- matrix.dsC
 			return(e1)
 		}
@@ -31,7 +32,7 @@ setMethod("Arith", signature(e1 = "TransitionLayer", e2 = "ANY"),
 setMethod("Arith", signature(e1 = "ANY", e2 = "TransitionLayer"),
 		function(e1, e2)
 		{
-			matrix.dsC <- callGeneric(e1,as(e2,"sparseMatrix"))
+			matrix.dsC <- callGeneric(e1,transitionMatrix(e2,inflate=FALSE))
 			transitionMatrix(e1) <- matrix.dsC
 			return(e1)
 		}
@@ -40,7 +41,7 @@ setMethod("Arith", signature(e1 = "ANY", e2 = "TransitionLayer"),
 setMethod("Math", signature(x = "TransitionLayer"),
 		function(x)
 		{
-			transitionMatrix(x) <- callGeneric(transitionMatrix(x))
+			transitionMatrix(x) <- callGeneric(transitionMatrix(x, inflate=FALSE))
 			return(x)
 		}
 )
@@ -48,7 +49,7 @@ setMethod("Math", signature(x = "TransitionLayer"),
 setMethod("==", signature(e1 = "TransitionLayer", e2 = "TransitionLayer"),
 		function(e1, e2)
 		{
-			c1 <- e1@transitionMatrix == e2@transitionMatrix
+			c1 <- transitionMatrix(e1) == transitionMatrix(e1)
 			c2 <- as(e1, "BasicRaster") == as(e2, "BasicRaster")
 			cond <- c1 & c2
 			return(cond)
@@ -66,7 +67,7 @@ setMethod("Arith", signature(e1 = "TransitionLayer", e2 = "TransitionStack"),
 					{
 						matrix.dsC <- callGeneric(as(e1,"sparseMatrix"),as(e2@transition[[i]],"sparseMatrix"))
 						e2@transition[[i]]@transitionMatrix <- matrix.dsC
-						
+						e2@transition[[i]]@transitionCells <- 1:ncell(e2)
 					}
 					return(e2)
 				}
@@ -91,6 +92,7 @@ setMethod("Arith", signature(e1 = "TransitionStack", e2 = "ANY"),
 				{
 					matrix.dsC <- callGeneric(transitionMatrix(e1@transition[[i]]),e2)
 					e1@transition[[i]]@transitionMatrix <- matrix.dsC
+					e1@transition[[i]]@transitionCells <- 1:ncell(e1)
 				}
 				
 			}
@@ -100,6 +102,7 @@ setMethod("Arith", signature(e1 = "TransitionStack", e2 = "ANY"),
 				{
 					matrix.dsC <- callGeneric(transitionMatrix(e1@transition[[i]]),e2[i])
 					e1@transition[[i]]@transitionMatrix <- matrix.dsC
+					e1@transition[[i]]@transitionCells <- 1:ncell(e1)
 				}
 			}
 			else
@@ -125,6 +128,7 @@ setMethod("Math", signature(x = "TransitionStack"),
 			{
 				matrix.dsC <- callGeneric(transitionMatrix(x@transition[[i]]))
 				e1@transition[[i]]@transitionMatrix <- matrix.dsC
+				e1@transition[[i]]@transitionCells <- 1:ncell(e1)
 			}
 			return(x)
 		}
@@ -133,7 +137,7 @@ setMethod("Math", signature(x = "TransitionStack"),
 setMethod("==", signature(e1 = "TransitionStack", e2 = "TransitionStack"),
 		function(e1, e2)
 		{
-			c1 <- e1@transitionMatrix == e2@transitionMatrix
+			c1 <- e1@transition == e2@transition
 			c2 <- as(e1, "BasicRaster") == as(e2, "BasicRaster")
 			cond <- c1 & c2
 			return(cond)

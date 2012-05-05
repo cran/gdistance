@@ -1,64 +1,92 @@
 # Author: Jacob van Etten jacobvanetten@yahoo.com
-# International Rice Research Institute
-# Date :  January 2009
-# Version 1.0
-# Licence GPL v3
+# Bioversity International
 
-setGeneric("transitionMatrix", function(transition) standardGeneric("transitionMatrix"))
+setGeneric("transitionMatrix", function(x, inflate) standardGeneric("transitionMatrix"))
 
-setMethod ("transitionMatrix", signature(transition = "TransitionLayer"),
-	function(transition){
-		transition@transitionMatrix
+setMethod ("transitionMatrix", signature(x = "TransitionLayer", inflate="missing"),
+	function(x)
+	{
+		transitionMatrix(x=x, inflate=TRUE)
 	}
 )
 
-setMethod ("transitionMatrix", signature(transition = "TransitionData"),
-	function(transition){
-		transition@transitionMatrix
+setMethod ("transitionMatrix", signature(x = "TransitionLayer", inflate="logical"),
+	function(x, inflate)
+	{
+		.tr(x, inflate, ncell(x))
 	}
 )
 
-setGeneric("transitionMatrix<-", function(transition, value) standardGeneric("transitionMatrix<-"))
+setMethod ("transitionMatrix", signature(x = "TransitionData", inflate="missing"),
+	function(x)
+	{
+		.tr(x=x, inflate=FALSE, nc=0)
+	}
+)
 
-setReplaceMethod ("transitionMatrix", signature(transition = "TransitionLayer", value = "sparseMatrix"),
-	function(transition, value){
+.tr <- function(x,inflate, nc)
+{
+	if(inflate & length(transitionCells(x)) != ncell(x))
+	{
+		tr <- Matrix(0, nc,nc)
+		cells <- transitionCells(x)
+		tr[cells,cells] <- x@transitionMatrix
+	}
+	if(!inflate | length(transitionCells(x)) == nc)
+	{
+		tr <- x@transitionMatrix
+	}
+	return(tr)
+}
+
+
+setGeneric("transitionMatrix<-", function(x, value) standardGeneric("transitionMatrix<-"))
+
+setReplaceMethod ("transitionMatrix", signature(x = "TransitionLayer", value = "sparseMatrix"),
+	function(x, value)
+	{
 		if(dim(value)[1] != dim(value)[2]){stop("sparse matrix has to be square")}
-		transition@transitionMatrix <- value
-		return(transition)
+		if(dim(value)[1] != ncell(x)[2]){stop("sparse matrix has to have ncell(x) rows and columns")}
+		x@transitionMatrix <- value
+		x@transitionCells <- 1:ncell(x)
+		return(x)
 	}
 )
 
-setGeneric("transitionCells", function(transition) standardGeneric("transitionCells"))
+setGeneric("transitionCells", function(x) standardGeneric("transitionCells"))
 
-setMethod ("transitionCells", signature(transition = "TransitionLayer"),
-	function(transition){
-		if(transition@transitionCells[1] != 0){return(transition@transitionCells)}
-		else{return(1:ncell(transition))}
+setMethod ("transitionCells", signature(x = "TransitionLayer"),
+	function(x)
+	{
+		return(x@transitionCells)
 	}
 )
 
-setGeneric("matrixValues", function(transition) standardGeneric("matrixValues"))
-
-setMethod ("matrixValues", signature(transition = "TransitionLayer"),
-	function(transition){
-		transition@matrixValues
+setMethod ("transitionCells", signature(x = "TransitionData"),
+	function(x)
+	{
+		return(x@transitionCells)
 	}
 )
 
-setMethod ("matrixValues", signature(transition = "TransitionStack"),
-	function(transition){
-		transition@matrixValues
-	}
+setGeneric("matrixValues", function(x) standardGeneric("matrixValues"))
+
+setMethod ("matrixValues", signature(x = "TransitionLayer"),
+	function(x){x@matrixValues}
 )
 
-setGeneric("matrixValues<-", function(transition, value) standardGeneric("matrixValues<-"))
+setMethod ("matrixValues", signature(x = "TransitionStack"),
+	function(x){stop("not implemented yet")}
+)
 
-setReplaceMethod ("matrixValues", signature(transition = "TransitionLayer", value = "character"),
-	function(transition, value){
+setGeneric("matrixValues<-", function(x, value) standardGeneric("matrixValues<-"))
+
+setReplaceMethod ("matrixValues", signature(x = "TransitionLayer", value = "character"),
+	function(x, value){
 		if (value == "resistance" | value == "conductance") 
 		{
-			transition@matrixValues <- value
-			return(transition)
+			x@matrixValues <- value
+			return(x)
 		}
 		else {stop("matrixValues can only be set to resistance or conductance")}
 	}
@@ -99,20 +127,31 @@ setMethod("[<-", signature(x = "TransitionLayer", i="numeric", j="numeric", valu
 		}
 )
 
-setGeneric("transitionMatrix<-", function(transition, value) standardGeneric("transitionMatrix<-"))
+setGeneric("transitionMatrix<-", function(x, value) standardGeneric("transitionMatrix<-"))
 
-setReplaceMethod ("transitionMatrix", signature(transition = "TransitionLayer", value = "sparseMatrix"),
-	function(transition, value){
+setReplaceMethod ("transitionMatrix", signature(x = "TransitionLayer", value = "sparseMatrix"),
+	function(x, value){
 		if(dim(value)[1] != dim(value)[2]){stop("sparse matrix has to be square")}
-		transition@transitionMatrix <- value
-		return(transition)
+		if(dim(value)[1] == ncell(x)){x@transitionMatrix <- value}
+		else
+		{
+			if(dim(value)[1] == length(transitionCells(x)))
+			{
+				trC <- transitionCells(x)
+				tr <- Matrix(0,ncell(x),ncell(x))
+				tr[trC,trC] <- value
+				x@transitionMatrix <- tr
+			}
+			else{stop("value is of wrong dimensions; either ncell(transition) or length(transitionCells(transition))")}
+		}
+		return(x)
 	}
 )
 
-setMethod('nlayers', signature(object='TransitionStack'), 
-	function(object)
+setMethod('nlayers', signature(x='TransitionStack'), 
+	function(x)
 	{
-		return(length(object@transition)) 
+		return(length(x@transition)) 
     }
 )
 
@@ -124,8 +163,8 @@ setMethod("[[", signature(x = "TransitionStack", i="numeric", j="missing"), func
 		{
 			if(length(i)==1)
 			{
-				result <- new("TransitionLayer", nrows=nrow(x),ncols = ncol(x),xmin = xmin(x),xmax = xmax(x),
-				ymin = ymin(x), ymax = ymax(x), projection=projection(x))
+				result <- new("TransitionLayer", nrows=as.integer(nrow(x)),ncols = as.integer(ncol(x)), extent = extent(c(xmin(x), xmax(x),
+				ymin(x), ymax(x))), crs=projection(x, asText=FALSE))
 				result@transitionMatrix <- x@transition[[i]]@transitionMatrix
 				result@transitionCells <- x@transition[[i]]@transitionCells
 				result@matrixValues <- x@transition[[i]]@matrixValues
@@ -147,16 +186,16 @@ setMethod("[[<-", signature(x = "TransitionStack", i="numeric", j="missing", val
 	}
 )
 
-setGeneric("transitionData", function(transition) standardGeneric("transitionData"))
+setGeneric("transitionData", function(x) standardGeneric("transitionData"))
 
-setMethod ("transitionData", signature(transition = "TransitionLayer"),
-	function(transition){
-		as(transition, "TransitionData")
+setMethod ("transitionData", signature(x = "TransitionLayer"),
+	function(x){
+		as(x, "TransitionData")
 	}
 )
 
-setMethod ("transitionData", signature(transition = "TransitionStack"),
-	function(transition){
-		transition@transition
+setMethod ("transitionData", signature(x = "TransitionStack"),
+	function(x){
+		x@transition
 	}
 )

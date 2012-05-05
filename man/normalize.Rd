@@ -6,10 +6,10 @@
 }
 
 \usage{
-normalize(transition, ...)
+normalize(x, ...)
 }
 \arguments{
-  \item{transition}{transition matrix (class Transition*)}
+  \item{x}{object of class Transition*)}
   \item{...}{optional argument \code{method} (see below)}
  }
 \details{

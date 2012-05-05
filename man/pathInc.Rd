@@ -1,43 +1,42 @@
 \name{pathInc}
 \alias{pathInc}
-\alias{pathInc,TransitionLayer,Coords,Coords,missing,character,missing,missing-method}
-\alias{pathInc,TransitionLayer,Coords,Coords,missing,character,numeric,missing-method}
-\alias{pathInc,TransitionLayer,Coords,Coords,missing,character,missing,TransitionLayer-method}
-\alias{pathInc,TransitionLayer,Coords,Coords,missing,character,numeric,TransitionLayer-method}
-\alias{pathInc,TransitionLayer,Coords,Coords,missing,character,missing,TransitionStack-method}
-\alias{pathInc,TransitionLayer,Coords,Coords,missing,character,numeric,TransitionStack-method}
+\alias{pathInc,TransitionLayer,Coords,Coords,missing,missing,missing-method}
+\alias{pathInc,TransitionLayer,Coords,Coords,missing,numeric,missing-method}
+\alias{pathInc,TransitionLayer,Coords,Coords,missing,missing,Transition-method}
+\alias{pathInc,TransitionLayer,Coords,Coords,missing,numeric,Transition-method}
+\alias{pathInc,TransitionLayer,Coords,Coords,Coords,missing,missing-method}
+\alias{pathInc,TransitionLayer,Coords,Coords,Coords,numeric,missing-method}
+\alias{pathInc,TransitionLayer,Coords,Coords,Coords,missing,Transition-method}
+\alias{pathInc,TransitionLayer,Coords,Coords,Coords,numeric,Transition-method}
 
 \title{Incidence of paths from a common origin: overlap and non-overlap}
 \description{
-Calculate the overlap and non-overlap of two paths departing from a common origin. Two algorithms to are available: random walk and randomised shortest paths.}
+Calculate the overlap and non-overlap of paths departing from a common origin. Two algorithms are available: random walk and randomised shortest paths.}
 \usage{
-pathInc(transition, origin, fromCoords, toCoords, type, theta, weight)
+pathInc(x, origin, from, to, theta, weight, ...)
+
 }
 \arguments{
-  \item{transition}{transition matrix (class Transition)}
+  \item{x}{transition matrix (class Transition)}
   \item{origin}{coordinates of the origin (one point location, SpatialPoints, matrix or numeric class)}  
-  \item{fromCoords}{coordinates of the destinations (SpatialPoints, matrix or numeric class)}
-  \item{toCoords}{second set of coordinates of the destinations (only "missing" implemented)}
-  \item{type}{a vector of one or two calculation types c("divergent","joint")}  
+  \item{from}{coordinates of the destinations (SpatialPoints, matrix or numeric class)}
+  \item{to}{second set of coordinates of the destinations (can be missing)}
   \item{theta}{value > 0 and < 20 (randomised shortest paths) or missing (random walk)}
   \item{weight}{weight matrix -- Reciprocals of the non-zero values are used as weights. If missing, reciprocals of the transition matrix are used.}
+  \item{...}{an extra argument functions to be defined manually (see below)}
 }
 \details{
-This function calculates the overlap and non-overlap in the random walk trajectories or randomised shortest paths originating in a single point to sets of other locations.
-First, probabilities of passage are calculated for each cell-to-cell connection. 
-The shared path is calculated as:
+This is a complex wrapper function that calculates to what extent dispersal routes overlap or do not overlap.
 
-Pjoint = Pi * Pj 
+First, the function calculates the trajectories for all "from" and "to" locations, starting from a single "origin" location. These trajectories can either be based on random walks or randomised shortest paths (giving a value to theta).
 
-Divergence is calculated as: 
+Then, for all unique pairs of trajectories, it calculates the extent to which these trajectories overlap or diverge. These values are given back to the user as a list of (distance) matrices.
 
-Pdivergent = max(0, max(Pi, Pj) * (1 - min(Pi, Pj)) - min(Pi, Pj))
-
-Both are summed over all connections ij in the transition matrix.
+If only "from" coordinates are given, the function calculates symmetric distance matrices for all combinations of points in "from". If both "from" and "to" coordinates are given, the function calculates a matrix of values with rows for all locations in "from" and columns for all locations in "to".
 
 }
 \value{
-dist object or list of dist objects
+list of dist objects or list of matrices
 }
 \references{
 McRae B.H., B.G. Dickson, and T. Keitt. 2008. Using circuit theory to model connectivity in ecology, evolution, and conservation. \emph{Ecology} 89:2712-2724.
@@ -67,13 +66,13 @@ sP1 <- SpatialPoints(cbind(c(65,5,-65),c(-55,35,-35)))
 #Randomised shortest paths
 #rescaling is needed: exp(-theta * trC) should give reasonable values
 trC <- trC / median(transitionMatrix(trC)@x) #divide by median of the non-zero values
-pathInc(trC, origin=sP0, fromCoords=sP1, type=c("divergent","joint"), theta=2)
+pathInc(trC, origin=sP0, from=sP1, theta=2)
 
 #Random walk
-pathInc(trR, origin=sP0, fromCoords=sP1, type=c("divergent","joint"))
+pathInc(trR, origin=sP0, from=sP1)
 
 #TransitionStack as weights
-pathInc(trR, origin=sP0, fromCoords=sP1, type=c("divergent","joint"), weight=ts)
+pathInc(trR, origin=sP0, from=sP1, weight=ts)
 
 }
 \keyword{ spatial }

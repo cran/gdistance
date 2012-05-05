@@ -41,8 +41,10 @@ setMethod("Summary", signature(x = "TransitionLayer"),
 				{
 					stop("operations with more than two Transition* objects not implemented; use stack()")
 				}
+				else{result <- callGeneric(x@transitionMatrix, objectList[[1]]@transitionMatrix, na.rm=na.rm)}
 			}
-			result <- callGeneric(x@transitionMatrix, object@transitionMatrix, na.rm=na.rm)
+			else{result <- callGeneric(x@transitionMatrix, na.rm=na.rm)}
+
 			return(result)
 		}
 )

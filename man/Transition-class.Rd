@@ -3,17 +3,13 @@
 \alias{TransitionLayer-class}
 \alias{TransitionStack-class}
 \alias{TransitionData-class}
+\alias{Transition-class}
 \alias{coerce,TransitionLayer,sparseMatrix-method}
 \alias{coerce,TransitionLayer,RasterLayer-method}
 \alias{coerce,TransitionLayer,TransitionStack-method}
 \alias{coerce,TransitionLayer,TransitionData-method}
 \alias{coerce,RasterLayer,TransitionLayer-method}
 \alias{coerce,TransitionData,sparseMatrix-method}
-
-\alias{initialize,TransitionLayer-method}
-\alias{initialize,TransitionStack-method}
-\alias{initialize,TransitionData-method}
-
 \alias{show,TransitionLayer-method}
 \alias{show,TransitionStack-method}
 
@@ -33,7 +29,9 @@ All slots belong to these two elements from other package, except two additional
 1. slot transitionCells, which is only used internally in the package;
 2. slot matrixValues indicates if the nonzero values of the transition matrix contains conductance or resistance values.
 
-Class TransitionStack contains various transition matrices as a list. 
+Class TransitionStack contains one or more transition matrices.
+
+Class Transition is the union of TransitionLayer and TransitionStack.
 
 }
 \section{Objects from the Class}{
@@ -70,10 +68,10 @@ Class \code{"\linkS4class{Raster}"}.
 \examples{
 showClass("TransitionLayer")
 
-tr <- new("TransitionLayer",nrows=36,ncols=18,xmin=-180,xmax=180,
-          ymin=-90,ymax=90,projection=CRS("+proj=longlat +datum=WGS84"))
+tr <- new("TransitionLayer",nrows=as.integer(36),ncols=as.integer(18),extent=extent(c(xmin=-180,xmax=180,
+          ymin=-90,ymax=90)),crs=CRS("+proj=longlat +datum=WGS84"))
 
-tr <- new("TransitionLayer",nrows=36,ncols=18,xmin=-180,xmax=180,
-          ymin=-90,ymax=90,projection="")
+tr <- new("TransitionLayer",nrows=as.integer(36),ncols=as.integer(18),extent=extent(c(xmin=-180,xmax=180,
+          ymin=-90,ymax=90)),crs=CRS(""))
 }
 \keyword{classes}

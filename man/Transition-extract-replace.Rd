@@ -16,11 +16,11 @@ Also see \code{\link[gdistance]{adjacencyFromTransition}}.
 }
 \examples{
   #Create a new raster and set all its values to unity.
-  raster <- raster(nrows=18, ncols=36) 
-  raster <- setValues(raster,rep(1,ncell(raster)))
+  r <- raster(nrows=18, ncols=36) 
+  r <- setValues(r,rep(1,ncell(r)))
 
   #Create TransitionLayer objects
-  tr1 <- transition(raster,mean,4)
+  tr1 <- transition(r,mean,4)
   tr2 <- tr1
 
   #Extracting and replacing

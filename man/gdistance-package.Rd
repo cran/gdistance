@@ -29,7 +29,8 @@ Distances can be calculated following these steps.
 
 5. Calculate distances and routes. Functions: \code{\link[gdistance:accCost]{accCost}}, 
 \code{\link[gdistance:costDistance]{costDistance}}, 
-\code{\link[gdistance:resistanceDistance]{resistanceDistance}},
+\code{\link[gdistance:commuteDistance]{commuteDistance}},
+\code{\link[gdistance:rSPDistance]{rSPDistance}},
 \code{\link[gdistance:shortestPath]{shortestPath}},
 \code{\link[gdistance:passage]{passage}},
 \code{\link[gdistance:pathInc]{pathInc}}.

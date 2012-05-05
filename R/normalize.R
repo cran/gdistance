@@ -4,41 +4,52 @@
 # Version beta
 # Licence GPL v3
 
-setGeneric("normalize", function(transition, ...) standardGeneric("normalize"))
+setGeneric("normalize", function(x, ...) standardGeneric("normalize"))
 
-setMethod("normalize", signature(transition = "TransitionLayer"), def = function(transition, method="row")
+setMethod("normalize", signature(x = "TransitionLayer"), def = function(x, method="row")
 	{
-		return(.normalize(transition, method))
+		tr <- transitionMatrix(x)
+		tr <- .normalize(tr, method)
+		transitionMatrix(x) <- tr
+		return(x)
 	}
 )
 
-.normalize <- function(transition, method)
+.normalize <- function(x, method)
 	{
-		tr <- transitionMatrix(transition)
+		
 		if(!(method %in% c("row","col","symm"))){stop("invalid method argument")}
 		if(method=="symm")
 		{
-			tr <- t(tr) 
-			rs <- (rowSums(tr)^-.5)
-			rs[rs == Inf] <- 0
-			tr <- tr * rs
-			tr <- t(tr)
-			cs <- colSums(tr)^-.5
-			cs[cs == Inf] <- 0
-			tr <- tr * rs
+			rs <- rowSums(x)^-.5
+			cs <- colSums(x)^-.5
+
+      tr <- x * rs
+      tr <- t(tr)
+			tr <- tr * cs
+    
+      tr <- t(tr)
+
+      if(isSymmetric(x)) 
+      {
+        tr <- forceSymmetric(tr)
+        tr <- as(tr, "CsparseMatrix")
+      }
 		}
-		if(method=="row")
+
+    if(method=="row")
 		{
-			rs <- 1 / rowSums(tr)
+			rs <- 1 / rowSums(x)
 			rs[rs == Inf] <- 0
-			tr <- tr * rs
+			tr <- x * rs
 		}
-		if(method=="col")
+
+    if(method=="col")
 		{
-			rs <- 1 / colSums(tr)
+			rs <- 1 / colSums(x)
 			rs[rs == Inf] <- 0
-			tr <- tr * rs
+			tr <- t(t(x) * rs)
 		}
-		transitionMatrix(transition) <- tr
-		return(transition)
+
+		return(tr)
 	}

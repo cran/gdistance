@@ -4,9 +4,9 @@
 # Version 1.0
 # Licence GPL v3
 
-setGeneric("transition", function(object, transitionFunction, directions, ...) standardGeneric("transition"))
+setGeneric("transition", function(x, transitionFunction, directions, ...) standardGeneric("transition"))
 
-setMethod("transition", signature(object = "RasterLayer"), def = function(object, transitionFunction, directions, symm=TRUE, intervalBreaks=NULL)
+setMethod("transition", signature(x = "RasterLayer"), def = function(x, transitionFunction, directions, symm=TRUE, intervalBreaks=NULL)
 		{
 			if(class(transitionFunction)=="character") 
 			{
@@ -16,44 +16,52 @@ setMethod("transition", signature(object = "RasterLayer"), def = function(object
 				}
 				if(transitionFunction=="barriers")
 				{
-					return(.barriers(object, directions, symm, intervalBreaks))
+					return(.barriers(x, directions, symm, intervalBreaks))
 				}
 				if(transitionFunction=="areas")
 				{
-					return(.areas(object, directions))
+					return(.areas(x, directions))
 				}
 			} else {
-				return(.TfromR(object, transitionFunction, directions, symm))
+				return(.TfromR(x, transitionFunction, directions, symm))
 			}
 		}
 )
 
-.TfromR <- function(object, transitionFunction, directions, symm)
+.TfromR <- function(x, transitionFunction, directions, symm)
 {
-			transition <- new("TransitionLayer",nrows=nrow(object),
-				ncols=ncol(object),xmin=xmin(object),xmax=xmax(object),ymin=ymin(object),ymax=ymax(object),
-				projection=projection(object, asText=FALSE))
-			transitionMatr <- transitionMatrix(transition)
-			adj <- adjacency(object,which(!is.na(getValues(object))),which(!is.na(getValues(object))),directions=directions)
-			if(symm){adj <- adj[adj[,1] < adj[,2],]}
-			dataVals <- cbind(getValues(object)[adj[,1]],getValues(object)[adj[,2]])
-			transition.values <- apply(dataVals,1,transitionFunction)
-			if(!all(transition.values>=0)){warning("transition function gives negative values")}
-			transitionMatr[adj] <- as.vector(transition.values)
-			if(symm)
-			{
-				transitionMatr <- forceSymmetric(transitionMatr)
-			}
-			transitionMatrix(transition) <- transitionMatr
-			matrixValues(transition) <- "conductance"
-			return(transition)
+	tr <- new("TransitionLayer",
+		nrows=as.integer(nrow(x)),
+		ncols=as.integer(ncol(x)),
+		extent=extent(x),
+		crs=projection(x, asText=FALSE),
+		transitionMatrix = Matrix(0,ncell(x),ncell(x)),
+		transitionCells = 1:ncell(x))
+	transitionMatr <- transitionMatrix(tr)
+  Cells <- which(!is.na(getValues(x)))
+	adj <- adjacency(x,Cells,Cells,directions=directions)
+	if(symm){adj <- adj[adj[,1] < adj[,2],]}
+	dataVals <- cbind(getValues(x)[adj[,1]],getValues(x)[adj[,2]])
+  transition.values <- apply(dataVals,1,transitionFunction)
+	if(!all(transition.values>=0)){warning("transition function gives negative values")}
+	transitionMatr[adj] <- as.vector(transition.values)
+	if(symm)
+	{
+		transitionMatr <- forceSymmetric(transitionMatr)
+	}
+	transitionMatrix(tr) <- transitionMatr
+	matrixValues(tr) <- "conductance"
+	return(tr)
 }
 
 .barriers <- function(x, directions, symm, intervalBreaks) {
-
-	Xlayer <- new("TransitionLayer",nrows=nrow(x),
-			ncols=ncol(x),xmin=xmin(x),xmax=xmax(x),ymin=ymin(x),ymax=ymax(x),
-			projection=projection(x, asText=FALSE))
+	Xlayer <- new("TransitionLayer",
+		nrows=as.integer(nrow(x)),
+		ncols=as.integer(ncol(x)),
+		extent=extent(x),
+		crs=projection(x, asText=FALSE),
+		transitionMatrix = Matrix(0,ncell(x),ncell(x)),
+		transitionCells = 1:ncell(x))
 	matrixValues(Xlayer) <- "resistance"
 	Xstack <- as(Xlayer, "TransitionStack") * 0
 	#Xstack@transition <- vector(list,...)
@@ -123,9 +131,13 @@ setMethod("transition", signature(object = "RasterLayer"), def = function(object
 
 .areas <- function(x, directions) {
 
-	Xlayer <- new("TransitionLayer",nrows=nrow(x),
-			ncols=ncol(x),xmin=xmin(x),xmax=xmax(x),ymin=ymin(x),ymax=ymax(x),
-			projection=projection(x, asText=FALSE))
+	Xlayer <- new("TransitionLayer",
+		nrows=as.integer(nrow(x)),
+		ncols=as.integer(ncol(x)),
+		extent=extent(x),
+		crs=projection(x, asText=FALSE),
+		transitionMatrix = Matrix(0,ncell(x),ncell(x)),
+		transitionCells = 1:ncell(x))
 	matrixValues(Xlayer) <- "resistance"
 	Xstack <- as(Xlayer, "TransitionStack") * 0
 	#Xstack@transition <- vector(list,...)
@@ -151,30 +163,29 @@ setMethod("transition", signature(object = "RasterLayer"), def = function(object
 
 
 
-setMethod("transition", signature(object = "RasterBrick"), def = function(object, transitionFunction="mahal", directions)
+setMethod("transition", signature(x = "RasterBrick"), def = function(x, transitionFunction="mahal", directions)
 		{
 			if(transitionFunction != "mahal")
 			{
 				stop("only Mahalanobis distance method implemented for RasterBrick")
 			}
-			x <- cbind(1:ncell(object),getValues(object))
-			x <- na.omit(x)
-			dataCells <- x[,1]
-			adj <- adjacency(object,dataCells,dataCells,directions=directions)
-			x.minus.y <- x[match(adj[,1],x[,1]),-1]-x[match(adj[,2],x[,1]),-1]
-			cov.inv <- solve(cov(x[,-1]))
+			xy <- cbind(1:ncell(x),getValues(x))
+			xy <- na.omit(xy)
+			dataCells <- xy[,1]
+			adj <- adjacency(x,dataCells,dataCells,directions=directions)
+			x.minus.y <- xy[adj[,1],-1]-xy[adj[,2],-1]
+			cov.inv <- solve(cov(xy[,-1]))
 			mahaldistance <- apply(x.minus.y,1,function(x){sqrt((x%*%cov.inv)%*%x)})
 			mahaldistance <- mean(mahaldistance)/(mahaldistance+mean(mahaldistance))
 			transitiondsC <- new("dsCMatrix", 
-					p = as.integer(rep(0,ncell(object)+1)),
-					Dim = as.integer(c(ncell(object),ncell(object))),
-					Dimnames = list(as.character(1:ncell(object)),as.character(1:ncell(object)))
+					p = as.integer(rep(0,ncell(x)+1)),
+					Dim = as.integer(c(ncell(x),ncell(x))),
+					Dimnames = list(as.character(1:ncell(x)),as.character(1:ncell(x)))
 			)
 			transitiondsC[adj] <- mahaldistance
-			transition <- new("TransitionLayer",nrows=nrow(object),ncols=
-			ncol(object),xmin=xmin(object),xmax=xmax(object),ymin=ymin(object),ymax=ymax(object),
-			projection=projection(object, asText=FALSE), matrixValues="conductance")
-			transitionMatrix(transition) <- transitiondsC
-			return(transition)
+			tr <- new("TransitionLayer",nrows=as.integer(nrow(x)),ncols=
+			as.integer(ncol(x)),extent = extent(x),
+			crs=projection(x, asText=FALSE), matrixValues="conductance", transitionMatrix = transitiondsC)
+			return(tr)
 		}
 )

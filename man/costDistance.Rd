@@ -6,11 +6,11 @@
 \description{
 Calculate the least-cost distance between points. }
 \usage{
-costDistance(transition, fromCoords, toCoords)
+costDistance(x, fromCoords, toCoords)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{transition}{ object of class \code{TransitionLayer} }
+  \item{x}{ object of class \code{TransitionLayer} }
   \item{fromCoords}{ first set of point locations (of \code{SpatialPoints}, matrix or numeric class)}  
   \item{toCoords}{ second, optional set of point locations (of \code{SpatialPoints}, matrix or numeric class)}
 }
@@ -37,7 +37,7 @@ r <- raster(nrows=18, ncols=36)
 r <- setValues(r,runif(ncell(r),0,1))
 
 #create a Transition object from the raster
-tr <- transition(r,mean,8)
+tr <- transition(r,function(x) 1/mean(x),8)
 
 #asymmetric
 ncf <- function(x) max(x) - x[1] + x[2]

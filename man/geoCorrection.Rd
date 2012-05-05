@@ -7,10 +7,10 @@
 }
 
 \usage{
-geoCorrection(transition, type, ...)
+geoCorrection(x, type, ...)
 }
 \arguments{
-  \item{transition}{object of class Transition*}
+  \item{x}{object of class Transition*}
   \item{type}{type of correction: "c", "r", or missing (only required for lonlat, see below)}  
   \item{...}{multpl: matrix with correction factor (TRUE) or corrected values (FALSE, the default); scl: scale the correction values (default is FALSE)}
 }
@@ -25,13 +25,10 @@ When working with lonlat grids, users should also anticipate whether they will u
 
 The correction is done by dividing conductance values by the inter-cell distance. Distances are calculated as great-circle distances for lonlat grids (see function isLonLat()) and Euclidean distances for all other grids.
 
-The values are scaled to get values near 1 if the argument \code{scl} is set to TRUE. This is desirable for subsequent calculations involving random walk calculations. Values are divided by the W-E inter-cell distance (at the equator).
+In the case of randomised shortest paths, the need for correction is somewhat in between these two correction methods. We have not developed an analytical solution for this problem yet. With very low values for theta, you may choose the correction for random walks, and for high values the one for least-cost paths. Users who want to work with intermediate values of theta are encouraged to experiment with different solutions. 
 
-In the case of randomised shortest paths, the need for correction is somewhat in between these two correction methods. We have not developed an analytical solution for this problem yet. Users who want to work with intermediate values of theta are encouraged to experiment with different solutions. 
+The values are scaled to get values near 1 if the argument \code{scl} is set to TRUE. This is desirable for subsequent calculations involving random walk calculations. Values are divided by the W-E inter-cell distance (at the centre of the grid).
 
-For extreme values of theta, less problems are expected. With very low values for theta, choose the correction for random walks, and for high values the one for least-cost paths. 
-
-For repetitive correction of similar Transition* objects, it is helpful to produce a TransitionLayer with just the correction factors. To achieve this, set \code{multpl} to TRUE (the default is FALSE). Correction is achieved by multiplying the original matrix with the matrix with correction factors. 
 }
 \value{
   Transition* object

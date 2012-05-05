@@ -10,13 +10,13 @@
   Calculates for each cell the number of passages of a random-walk or randomised shortest paths with given origin(s) and destination(s). Either the total or the net number of passages can be calculated.  In the case of multiple origins or destinations, each receives equal weight. 
 }
 \usage{
-passage(transition, origin, goal, theta, ...)
+passage(x, origin, goal, theta, ...)
 }
 \arguments{
-  \item{transition}{Object of class Transition}
+  \item{x}{Object of class Transition}
   \item{origin}{SpatialPoints, matrix or numeric object with coordinates or RasterLayer object with origin cells set to TRUE}
   \item{goal}{SpatialPoints, matrix or numeric object with coordinates or RasterLayer object with origin cells set to TRUE}
-  \item{theta}{If zero or missing, a random walk results. If a numeric value 0 < theta < 20 is given, randomised shortest paths are calculated.}
+  \item{theta}{If zero or missing, a random walk results. If a numeric value 0 < theta < 20 is given, randomised shortest paths are calculated; theta is the degree from which the path randomly deviates from the shortest path}
   \item{...}{Additional arguments: totalNet ("total" or "net"), and output ("RasterLayer" or "Transition")}
 }
 \details{
@@ -39,7 +39,7 @@ Saerens M., L. Yen, F. Fouss, and Y. Achbany. 2009. Randomized shortest-path pro
 }
 \author{ Jacob van Etten \email{jacobvanetten@yahoo.com}. Implementation of randomised shortest paths based on Matlab code by Marco Saerens.}
 
-\seealso{ \code{\link[gdistance]{resistanceDistance}}, \code{\link[gdistance]{pathInc}} }
+\seealso{ \code{\link[gdistance]{commuteDistance}}, \code{\link[gdistance]{pathInc}} }
 \examples{
 #create a new raster and set all its values to unity.
 raster <- raster(nrows=18, ncols=36) 

@@ -7,21 +7,21 @@
 #TODO check if coordinate systems are equal.
 #TODO check if bounding box of coordinates falls inside bb of transition
 
-setGeneric("costDistance", function(transition, fromCoords, toCoords) standardGeneric("costDistance"))
+setGeneric("costDistance", function(x, fromCoords, toCoords) standardGeneric("costDistance"))
 
-setMethod("costDistance", signature(transition = "TransitionLayer", fromCoords = "Coords", toCoords = "Coords"), def = function(transition, fromCoords, toCoords)
+setMethod("costDistance", signature(x = "TransitionLayer", fromCoords = "Coords", toCoords = "Coords"), def = function(x, fromCoords, toCoords)
 	{
-		return(.cd(transition, fromCoords, toCoords))
+		return(.cd(x, fromCoords, toCoords))
 	}
 )
 
-.cd <- function(transition, fromCoords, toCoords)
+.cd <- function(x, fromCoords, toCoords)
 {
 	fromCoords <- .coordsToMatrix(fromCoords)
 	toCoords <- .coordsToMatrix(toCoords)
 
-	fromCells <- cellFromXY(transition, fromCoords)
-	toCells <- cellFromXY(transition, toCoords)
+	fromCells <- cellFromXY(x, fromCoords)
+	toCells <- cellFromXY(x, toCoords)
 	
 	if(!all(!is.na(fromCells))){
 		warning("some coordinates not found and omitted")
@@ -37,8 +37,8 @@ setMethod("costDistance", signature(transition = "TransitionLayer", fromCoords =
 	rownames(costDist) <- rownames(fromCoords)
 	colnames(costDist) <- rownames(toCoords)
 		
-	if(isSymmetric(transitionMatrix(transition))) {m <- "undirected"} else {m <- "directed"}
-	adjacencyGraph <- graph.adjacency(transitionMatrix(transition), mode=m, weighted=TRUE)
+	if(isSymmetric(transitionMatrix(x))) {m <- "undirected"} else {m <- "directed"}
+	adjacencyGraph <- graph.adjacency(transitionMatrix(x), mode=m, weighted=TRUE)
 	
 	E(adjacencyGraph)$weight <- 1/E(adjacencyGraph)$weight
 
@@ -48,7 +48,7 @@ setMethod("costDistance", signature(transition = "TransitionLayer", fromCoords =
 
 	for (i in 1:length(uniqueFromCells))
 	{
-		shortestPaths[i,] <- shortest.paths(adjacencyGraph, uniqueFromCells[i]-1, mode="out")[,uniqueToCells]
+		shortestPaths[i,] <- shortest.paths(adjacencyGraph, uniqueFromCells[i]-1, mode="out", algorithm="dijkstra")[,uniqueToCells]
 	}
 
 	index1 <- match(fromCells,uniqueFromCells)
@@ -57,16 +57,16 @@ setMethod("costDistance", signature(transition = "TransitionLayer", fromCoords =
 	return(costDist)
 }
 
-setMethod("costDistance", signature(transition = "TransitionLayer", fromCoords = "Coords", toCoords = "missing"), def = function(transition, fromCoords)
+setMethod("costDistance", signature(x = "TransitionLayer", fromCoords = "Coords", toCoords = "missing"), def = function(x, fromCoords)
 	{
-		return(.cd2(transition, fromCoords))
+		return(.cd2(x, fromCoords))
 	}
 )
 
-.cd2 <- function(transition, fromCoords)
+.cd2 <- function(x, fromCoords)
 {
 		fromCoords <- .coordsToMatrix(fromCoords)
-		fromCells <- cellFromXY(transition, fromCoords)
+		fromCells <- cellFromXY(x, fromCoords)
 
 		if(!all(!is.na(fromCells))){
 			warning("some coordinates not found and omitted")
@@ -77,8 +77,8 @@ setMethod("costDistance", signature(transition = "TransitionLayer", fromCoords =
 		rownames(costDist) <- rownames(fromCoords)
 		colnames(costDist) <- rownames(fromCoords)
 		
-		if(isSymmetric(transitionMatrix(transition))) {m <- "undirected"} else {m <- "directed"}
-		adjacencyGraph <- graph.adjacency(transitionMatrix(transition), mode=m, weighted=TRUE)
+		if(isSymmetric(transitionMatrix(x))) {m <- "undirected"} else {m <- "directed"}
+		adjacencyGraph <- graph.adjacency(transitionMatrix(x), mode=m, weighted=TRUE)
 		
 		E(adjacencyGraph)$weight <- 1/E(adjacencyGraph)$weight
 

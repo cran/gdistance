@@ -6,25 +6,25 @@
 
 #check if Transition and RasterLayers coincide, etc.
 
-setGeneric("shortestPath", function(transition, origin, goal, ...) standardGeneric("shortestPath"))
+setGeneric("shortestPath", function(x, origin, goal, ...) standardGeneric("shortestPath"))
 
-setMethod("shortestPath", signature(transition = "TransitionLayer", origin = "Coords", goal = "Coords"), 
-	def = function(transition, origin, goal, output="TransitionLayer")
+setMethod("shortestPath", signature(x = "TransitionLayer", origin = "Coords", goal = "Coords"), 
+	def = function(x, origin, goal, output="TransitionLayer")
 	{
 		origin <- .coordsToMatrix(origin)
 		goal <- .coordsToMatrix(goal)
-		return(.shortestPath(transition, origin, goal, output))		
+		return(.shortestPath(x, origin, goal, output))		
 	}
 )
 
-.shortestPath <- function(transition, origin, goal, output)
+.shortestPath <- function(x, origin, goal, output)
 {
-	originCells <- cellFromXY(transition, origin)
-	goalCells <- cellFromXY(transition, goal)
+	originCells <- cellFromXY(x, origin)
+	goalCells <- cellFromXY(x, goal)
 	indexOrigin <- originCells - 1
 	indexGoal <- goalCells - 1
-	if(isSymmetric(transitionMatrix(transition))) {mode <- "undirected"} else {mode <- "directed"}
-	adjacencyGraph <- graph.adjacency(transitionMatrix(transition), mode=mode, weighted=TRUE)
+	if(isSymmetric(transitionMatrix(x))) {mode <- "undirected"} else {mode <- "directed"}
+	adjacencyGraph <- graph.adjacency(transitionMatrix(x), mode=mode, weighted=TRUE)
 	E(adjacencyGraph)$weight <- 1/E(adjacencyGraph)$weight
 
 	shortestPaths <- get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal) #only first in indexOrigin is taken into account!
@@ -32,8 +32,8 @@ setMethod("shortestPath", signature(transition = "TransitionLayer", origin = "Co
 	if(output=="TransitionLayer")
 	{
 		
-		result <- transition
-		transitionMatrix(result) <- Matrix(0, ncol=ncell(transition), nrow=ncell(transition))			
+		result <- x
+		transitionMatrix(result) <- Matrix(0, ncol=ncell(x), nrow=ncell(x))			
 		for(i in 1:length(shortestPaths))
 		{
 			sPVector <- (shortestPaths[[i]] + 1) #igraph 6.0 -> change
@@ -45,8 +45,8 @@ setMethod("shortestPath", signature(transition = "TransitionLayer", origin = "Co
 
 	if(output=="TransitionStack")
 	{
-		result <- transition
-		transitionMatrix(result) <- Matrix(0, ncol=ncell(transition), nrow=ncell(transition))			
+		result <- x
+		transitionMatrix(result) <- Matrix(0, ncol=ncell(x), nrow=ncell(x))			
 		for(i in 1:length(shortestPaths))
 		{
 			resultNew <- result
@@ -66,12 +66,12 @@ setMethod("shortestPath", signature(transition = "TransitionLayer", origin = "Co
 		for(i in 1:length(shortestPaths))
 		{
 			sPVector <- (shortestPaths[[i]] + 1) #igraph 6.0 -> change
-			coords <- xyFromCell(transition, sPVector)
+			coords <- xyFromCell(x, sPVector)
 			linesList[[i]] <- Line(coords)
 		}
 		
 		LinesObject <- Lines(linesList, ID = as.character(1:length(shortestPaths)))
-		result <- SpatialLines(list(LinesObject), proj4string = CRS(projection(transition)))
+		result <- SpatialLines(list(LinesObject), proj4string = CRS(projection(x)))
 	}
 
 	return(result)

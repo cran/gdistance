@@ -24,10 +24,10 @@
 	return(Coords)
 }
 
-.connected.components <- function(transition)
+.connected.components <- function(x)
 {
-	adj.graph <- graph.adjacency(transition@transitionMatrix)
-	clustermembership <- cbind(1:ncell(transition),as.integer(clusters(adj.graph)$membership)+1)
+	adj.graph <- graph.adjacency(transitionMatrix(x))
+	clustermembership <- cbind(1:ncell(x),as.integer(clusters(adj.graph)$membership)+1)
 	return(clustermembership)
 }
 
@@ -102,21 +102,19 @@
 	return(Current)
 }
 
-.Laplacian <- function(transition) 
+.Laplacian <- function(x) 
 {
-	Laplacian <- Diagonal(x = colSums(transitionMatrix(transition))) - transitionMatrix(transition)
+	Laplacian <- Diagonal(x = colSums(transitionMatrix(x, inflate=FALSE))) - transitionMatrix(x, inflate=FALSE)
 	Laplacian <- as(Laplacian, "symmetricMatrix")
 	return(Laplacian)
 }
 
-.transitionSolidify <- function(transition)
+.transitionSolidify <- function(x)
 {
-	transitionMatr <- as(transition,"sparseMatrix")
-	selection <- which(rowMeans(transitionMatr)>1e-40)
-	transition@transitionCells <- (1:ncell(transition))[selection]
-	transitionMatr <- transitionMatr[selection,selection]
-	transitionMatrix(transition) <- transitionMatr
-	return(transition)
+	selection <- which(rowMeans(transitionMatrix(x,inflate=FALSE))>1e-300)
+	x@transitionCells <- x@transitionCells[selection]
+	x@transitionMatrix <- transitionMatrix(x,inflate=FALSE)[selection,selection]
+	return(x)
 }
 
 #determine place in dist vector given place in dist matrix -- from gdistanalyst

@@ -4,63 +4,65 @@
 # Version 1.0
 # Licence GPL v3
 
-#add random walk output = Transition, etc.
-
 #check if Transition and RasterLayers coincide, etc.
 
-#with a separate function, it should be possible to calculate and compare these objects efficiently
-#this could be done with preset functions OR customer designed functions
-#raster should be improved in functionality
+setGeneric("passage", function(x, origin, goal, theta, ...) standardGeneric("passage"))
 
-setGeneric("passage", function(transition, origin, goal, theta, ...) standardGeneric("passage"))
-
-setMethod("passage", signature(transition = "TransitionLayer", origin = "Coords", goal = "Coords", theta="missing"), def = function(transition, origin, goal, totalNet="net", output="RasterLayer")
+setMethod("passage", signature(x = "TransitionLayer", origin = "Coords", goal = "Coords", theta="missing"), def = function(x, origin, goal, totalNet="net", output="RasterLayer")
 	{
+		.checkInputsPassage(totalNet, output)
+		
 		origin <- .coordsToMatrix(origin)
 		goal <- .coordsToMatrix(goal)
 		
 		if(totalNet=="net" & output=="RasterLayer")
 		{
-			tc <- transitionCells(transition)
-			cellnri <- cellFromXY(transition, origin)
-			cellnrj <- cellFromXY(transition, goal)
-			transition <- .transitionSolidify(transition)
+			x <- .transitionSolidify(x)
+			tc <- transitionCells(x)
+			cellnri <- cellFromXY(x, origin)
+			cellnrj <- cellFromXY(x, goal)
 			ci <- match(cellnri,tc)
 			cj <- match(cellnrj,tc)
-			result <- .flowMap(transition, ci, cj, tc)
+			result <- .flowMap(x, ci, cj, tc)
 		}
-		else{stop("no method available")}
+		else{stop("no method available -- try a low value of theta instead")}
 		return(result)
 	}
 )
 
-setMethod("passage", signature(transition = "TransitionLayer", origin = "RasterLayer", goal = "RasterLayer", theta="missing"), def = function(transition, origin, goal, totalNet="net", output="RasterLayer")
+setMethod("passage", signature(x = "TransitionLayer", origin = "RasterLayer", goal = "RasterLayer", theta="missing"), def = function(x, origin, goal, totalNet="net", output="RasterLayer")
 	{
+		.checkInputsPassage(totalNet, output)
 		
-
 		if(totalNet=="net" & output=="RasterLayer")
 		{
-			transition <- .transitionSolidify(transition)
-			tc <- transitionCells(transition)
+			x <- .transitionSolidify(x)
+			tc <- transitionCells(x)
 			ci <- which(getValues(origin))
 			cj <- which(getValues(goal))
-			result <- .flowMap(transition, ci, cj, tc)
+			result <- .flowMap(x, ci, cj, tc)
 		}
-		else{stop("no method available")}
+		else{stop("no method available -- try a low value of theta instead")}
 		return(result)
 	}
 )
 
-.flowMap <- function(transition, indexOrigin, indexGoal, tc)
+.checkInputsPassage <- function(totalNet, output)
 {
-	L <- .Laplacian(transition)
+	if(!(totalNet %in% c("total","net"))){stop("totalNet should be either total or net")}
+	if(!(output %in% c("RasterLayer","TransitionLayer"))){stop("output should be either RasterLayer or TransitionLayer")}
+} 
+
+.flowMap <- function(x, indexOrigin, indexGoal, tc)
+{
+	L <- .Laplacian(x)
 	Lr <- L[-dim(L)[1],-dim(L)[1]]
 	A <- as(L,"lMatrix")
 	A <- as(A,"dMatrix")
 	n <- max(dim(Lr))
 	Current <- .currentR(L, Lr, A, n, indexOrigin, indexGoal)
-	result <- as(transition,"RasterLayer")
-	dataVector <- rep(NA,times=ncell(result))
+	result <- as(x,"RasterLayer")
+	dataVector <- rep(0,times=ncell(result))
 	dataVector[tc] <- Current
 	result <- setValues(result, dataVector)
 	return(result)
@@ -72,38 +74,38 @@ setMethod("passage", signature(transition = "TransitionLayer", origin = "RasterL
 # Version 1.0
 # Licence GPL v3
 
-setMethod("passage", signature(transition = "TransitionLayer", origin = "Coords", goal = "Coords", theta="numeric"), def = function(transition, origin, goal, theta, totalNet="net", output="RasterLayer")
+setMethod("passage", signature(x = "TransitionLayer", origin = "Coords", goal = "Coords", theta="numeric"), def = function(x, origin, goal, theta, totalNet="net", output="RasterLayer")
 	{
-		cellnri <- cellFromXY(transition, origin)
-		cellnrj <- cellFromXY(transition, goal)
-		transition <- .transitionSolidify(transition)
-		tc <- transitionCells(transition)
+		cellnri <- cellFromXY(x, origin)
+		cellnrj <- cellFromXY(x, goal)
+		x <- .transitionSolidify(x)
+		tc <- transitionCells(x)
 
 		ci <- match(cellnri,tc)
 		cj <- match(cellnrj,tc)
 		
-		result <- .randomShPaths(transition, ci, cj, theta, tc, totalNet, output)
+		result <- .randomShPaths(x, ci, cj, theta, tc, totalNet, output)
 		return(result)
 	}
 )
 
-setMethod("passage", signature(transition = "TransitionLayer", origin = "RasterLayer", goal = "RasterLayer", theta="numeric"), def = function(transition, origin, goal, theta, totalNet="net", output="RasterLayer")
+setMethod("passage", signature(x = "TransitionLayer", origin = "RasterLayer", goal = "RasterLayer", theta="numeric"), def = function(x, origin, goal, theta, totalNet="net", output="RasterLayer")
 	{
 		#check if Transition and RasterLayers coincide
 		ci <- which(getValues(origin))
 		cj <- which(getValues(goal))
-		transition <- .transitionSolidify(transition)
-		tc <- transitionCells(transition)
-		result <- .randomShPaths(transition, ci, cj, theta, tc, totalNet, output)
+		x <- .transitionSolidify(x)
+		tc <- transitionCells(x)
+		result <- .randomShPaths(x, ci, cj, theta, tc, totalNet, output)
 		return(result)
 	}
 )
 
-.randomShPaths <- function(transition, ci, cj, theta, tc, totalNet, output)
+.randomShPaths <- function(x, ci, cj, theta, tc, totalNet, output)
 {
 	if(theta < 0 | theta > 20 ) {stop("theta value out of range (between 0 and 20)")}
 	
-	tr <- transitionMatrix(transition)
+	tr <- transitionMatrix(x,inflate=FALSE)
 	
 	trR <- tr
 	trR@x <- 1 / trR@x 
@@ -114,14 +116,16 @@ setMethod("passage", signature(transition = "TransitionLayer", origin = "RasterL
 	P <- tr * rs
 
 	W <- trR
-	W@x <- exp(-theta * trR@x) #zero values are not relevant because of next step exp(-theta * trR@x) ; the logarithm is a small variation, which gives a natural random walk
+	W@x <- exp(-theta * trR@x) #zero values are not relevant because of next step exp(-theta * trR@x) 
 	W <- W * P 
 
-	return(.probPass(transition, Id, W, nr, ci, cj, tc, totalNet, output))
+	return(.probPass(x, Id, W, nr, ci, cj, tc, totalNet, output))
 }
 	
-.probPass <- function(transition, Id, W, nr, ci, cj, tc, totalNet, output)
+.probPass <- function(x, Id, W, nr, ci, cj, tc, totalNet, output)
 {
+	nc <- ncell(x)
+	
 	Ij <- Diagonal(nr)
 	Ij[cbind(cj,cj)] <- 1 - 1 / length(cj)
 	Wj <- Ij %*% W
@@ -143,13 +147,14 @@ setMethod("passage", signature(transition = "TransitionLayer", origin = "RasterL
 	{
 		if(output == "RasterLayer")	
 		{
-			result <- as(transition,"RasterLayer")
-			dataVector <- rep(0,times=ncell(result))
+			result <- as(x,"RasterLayer")
+			result[] <- rep(0,times=nc)
 		}	
 		if(output == "TransitionLayer")
 		{
-			result <- transition
-			transitionMatrix(result) <- transitionMatrix(result) * 0
+			result <- x
+			transitionMatrix(result) <- Matrix(0, nc, nc)
+			result@transitionCells <- 1:nc
 		}
 	}
 	
@@ -186,25 +191,31 @@ setMethod("passage", signature(transition = "TransitionLayer", origin = "RasterL
 				n <- pmax(rowSums(nNet),colSums(nNet))
 				n[c(ci,cj)] <- 2 * n[c(ci,cj)]
 			}
-			result <- as(transition,"RasterLayer")
-			dataVector <- rep(NA,times=ncell(result))
+			result <- as(x,"RasterLayer")
+			dataVector <- rep(NA,times=nc)
 			dataVector[tc] <- n
 			result <- setValues(result, dataVector)
 		}
 	
 		if(output == "TransitionLayer")
 		{
-			result <- transition
+			result <- x
 			if(totalNet == "total")
 			{
-				transitionMatrix(transition) <- N
+				tr <- Matrix(0, nc, nc)
+				tr[tc,tc] <- N
 			}
 			if(totalNet == "net")
 			{
 				nNet <- skewpart(N) * 2
 				nNet@x[nNet@x<0] <- 0
-				transitionMatrix(result) <- nNet
+				tr <- Matrix(0, nc, nc)
+				tr[tc,tc] <- nNet
 			}
+			
+			transitionMatrix(result) <- tr
+			result@transitionCells <- 1:nc
+			
 		}
 	}
 	return(result)
