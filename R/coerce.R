@@ -1,9 +1,4 @@
-setAs("TransitionLayer", "sparseMatrix", function(from){
-  tr <- Matrix(0, ncell(from),ncell(from))
-  cells <- transitionCells(from)
-  tr[cells,cells] <- from@transitionMatrix
-  return(tr)
-})
+setAs("TransitionLayer", "sparseMatrix", function(from){from@transitionMatrix})
 
 setAs("TransitionData", "sparseMatrix", function(from){from@transitionMatrix})
 

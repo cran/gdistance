@@ -24,7 +24,7 @@ setMethod ("transitionMatrix", signature(x = "TransitionData", inflate="missing"
 	}
 )
 
-.tr <- function(x,inflate, nc)
+.tr <- function(x, inflate, nc)
 {
 	if(inflate & length(transitionCells(x)) != ncell(x))
 	{

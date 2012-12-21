@@ -25,7 +25,7 @@ RasterLayer
 E.W. Dijkstra. 1959. A note on two problems in connexion with graphs. \emph{Numerische Mathematik} 1, 269 - 271.
 }
 \author{ Jacob van Etten \email{jacobvanetten@yahoo.com}}
-\seealso{ \code{\link[igraph0:shortest.paths]{shortest.paths}}, \code{\link[gdistance]{geoCorrection}}, \code{\link[gdistance]{costDistance}} }
+\seealso{ \code{\link[igraph]{shortest.paths}}, \code{\link[gdistance]{geoCorrection}}, \code{\link[gdistance]{costDistance}} }
 \examples{
 #example equivalent to that in the documentation on r.cost in GRASS
 r <- raster(nrows=6, ncols=7, xmn=0, xmx=7, ymn=0, ymx=6, crs="+proj=utm +units=m")

@@ -21,13 +21,14 @@ setMethod("shortestPath", signature(x = "TransitionLayer", origin = "Coords", go
 {
 	originCells <- cellFromXY(x, origin)
 	goalCells <- cellFromXY(x, goal)
-	indexOrigin <- originCells - 1
-	indexGoal <- goalCells - 1
-	if(isSymmetric(transitionMatrix(x))) {mode <- "undirected"} else {mode <- "directed"}
-	adjacencyGraph <- graph.adjacency(transitionMatrix(x), mode=mode, weighted=TRUE)
+	indexOrigin <- originCells 
+	indexGoal <- goalCells 
+  y <- transitionMatrix(x)
+	if(isSymmetric(y)) {mode <- "undirected"} else{mode <- "directed"}
+	adjacencyGraph <- graph.adjacency(y, mode=mode, weighted=TRUE)
 	E(adjacencyGraph)$weight <- 1/E(adjacencyGraph)$weight
 
-	shortestPaths <- get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal) #only first in indexOrigin is taken into account!
+	shortestPaths <- get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal)
 	
 	if(output=="TransitionLayer")
 	{
@@ -36,10 +37,10 @@ setMethod("shortestPath", signature(x = "TransitionLayer", origin = "Coords", go
 		transitionMatrix(result) <- Matrix(0, ncol=ncell(x), nrow=ncell(x))			
 		for(i in 1:length(shortestPaths))
 		{
-			sPVector <- (shortestPaths[[i]] + 1) #igraph 6.0 -> change
+			sPVector <- shortestPaths[[i]]
 			adj <- cbind(sPVector[-(length(sPVector))], sPVector[-1])
 			adj <- rbind(adj,cbind(adj[,2], adj[,1]))
-			transitionMatrix(result)[adj] <- 1/length(shortestPaths)
+			transitionMatrix(result)[adj] <- 1/length(shortestPaths) + transitionMatrix(result)[adj]
 		}
 	}
 
@@ -50,7 +51,7 @@ setMethod("shortestPath", signature(x = "TransitionLayer", origin = "Coords", go
 		for(i in 1:length(shortestPaths))
 		{
 			resultNew <- result
-			sPVector <- (shortestPaths[[i]] + 1) #igraph 6.0 -> change
+			sPVector <- shortestPaths[[i]] 
 			adj <- cbind(sPVector[-(length(sPVector))], sPVector[-1])
 			adj <- rbind(adj,cbind(adj[,2], adj[,1]))
 			transitionMatrix(resultNew)[adj] <- 1/length(shortestPaths)
@@ -65,7 +66,7 @@ setMethod("shortestPath", signature(x = "TransitionLayer", origin = "Coords", go
 				
 		for(i in 1:length(shortestPaths))
 		{
-			sPVector <- (shortestPaths[[i]] + 1) #igraph 6.0 -> change
+			sPVector <- shortestPaths[[i]]
 			coords <- xyFromCell(x, sPVector)
 			linesList[[i]] <- Line(coords)
 		}

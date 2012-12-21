@@ -25,7 +25,7 @@ setClass(Class="TransitionData",
 )
 
 setClass(Class="TransitionLayer",
-		contains = c("Raster", "TransitionData"),
+		contains = c("BasicRaster", "TransitionData"),
     prototype = prototype(
       rotated = FALSE,
       ncols= as.integer(1),
@@ -33,8 +33,6 @@ setClass(Class="TransitionLayer",
       layernames=c(""),
       unit=c(""),
       z = list(),
-      zname='',
-      zvalue='',
       crs = CRS(as.character(NA)),
       transitionMatrix = Matrix(0,1,1),
       transitionCells = 1,
@@ -50,7 +48,7 @@ setClass(Class="TransitionLayer",
 )
 
 setClass ("TransitionStack",
-	contains = "Raster",
+	contains = "BasicRaster",
 	representation (
 			transition = "list"
 	),
@@ -61,8 +59,6 @@ setClass ("TransitionStack",
     layernames=c(""),
     unit=c(""),
     z = list(),
-    zname='',
-    zvalue='',
     crs = CRS(as.character(NA)),
     transition=list(new("TransitionData"))
   ),

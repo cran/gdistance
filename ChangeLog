@@ -1,3 +1,10 @@
+--- version 1.1.4, December 2012
+
+Class changes to BasicRaster
+Change from igraph0 to igraph 6
+Change in as(x, "transitionMatrix") to speed up transition()
+Update to the new adjacent method in raster
+
 --- version 1.1.3, April 2012
 
 Further adapting to naming changes in raster ("x" argument)

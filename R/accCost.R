@@ -26,7 +26,7 @@ setMethod("accCost", signature(x = "TransitionLayer", fromCoords = "Coords"), de
 		adjacencyGraph <- graph.adjacency(tr, mode="directed", weighted=TRUE)
 		E(adjacencyGraph)$weight <- 1/E(adjacencyGraph)$weight		
 	
-		shortestPaths <- shortest.paths(adjacencyGraph, v=startNode-1)[-startNode]
+		shortestPaths <- shortest.paths(adjacencyGraph, v=startNode)[-startNode]
 
 		result <- as(x, "RasterLayer")
 		result <- setValues(result, shortestPaths)	

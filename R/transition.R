@@ -38,11 +38,11 @@ setMethod("transition", signature(x = "RasterLayer"), def = function(x, transiti
 		transitionMatrix = Matrix(0,ncell(x),ncell(x)),
 		transitionCells = 1:ncell(x))
 	transitionMatr <- transitionMatrix(tr)
-  Cells <- which(!is.na(getValues(x)))
-	adj <- adjacency(x,Cells,Cells,directions=directions)
+	Cells <- which(!is.na(getValues(x)))
+	adj <- adjacent(x, cells=Cells, pairs=TRUE, target=Cells, directions=directions)
 	if(symm){adj <- adj[adj[,1] < adj[,2],]}
 	dataVals <- cbind(getValues(x)[adj[,1]],getValues(x)[adj[,2]])
-  transition.values <- apply(dataVals,1,transitionFunction)
+	transition.values <- apply(dataVals,1,transitionFunction)
 	if(!all(transition.values>=0)){warning("transition function gives negative values")}
 	transitionMatr[adj] <- as.vector(transition.values)
 	if(symm)
@@ -80,8 +80,8 @@ setMethod("transition", signature(x = "RasterLayer"), def = function(x, transiti
 				XlayerNew <- Xlayer
 				cells1 <- which(getValues(x) == vals[j[1]])
 				cells2 <- which(getValues(x) == vals[j[2]])
-				adj1 <- adjacency(x, cells1, cells2, directions)
-				adj2 <- adjacency(x, cells2, cells1, directions)
+				adj1 <- adjacent(x, cells=cells1, pairs=TRUE, target=cells2, directions=directions)
+				adj2 <- adjacent(x, cells=cells2, pairs=TRUE, target=cells1, directions=directions)
 				adj <- rbind(adj1,adj2)
 				XlayerNew[adj] <- 1
 				Xstack <- stack(Xstack, XlayerNew)
@@ -95,8 +95,8 @@ setMethod("transition", signature(x = "RasterLayer"), def = function(x, transiti
 				XlayerNew2 <- Xlayer
 				cells1 <- which(getValues(x) == vals[j[1]])
 				cells2 <- which(getValues(x) == vals[j[2]])
-				adj1 <- adjacency(x, cells1, cells2, directions)
-				adj2 <- adjacency(x, cells2, cells1, directions)
+				adj1 <- adjacent(x, cells=cells1, pairs=TRUE, target=cells2, directions=directions)
+				adj2 <- adjacent(x, cells=cells2, pairs=TRUE, target=cells1, directions=directions)
 				XlayerNew1[adj1] <- 1
 				XlayerNew2[adj2] <- 1				
 				Xstack <- stack(Xstack, XlayerNew1, XlayerNew2)
@@ -107,7 +107,7 @@ setMethod("transition", signature(x = "RasterLayer"), def = function(x, transiti
 	
 		Xmin <- transition(x, min, directions)
 		Xmax <- transition(x, max, directions)
-		index1 <- adjacency(x, 1:ncell(x), 1:ncell(x), directions)
+		index1 <- adjacent(x, cells=1:ncell(x), pairs=TRUE, target=1:ncell(x), directions=directions)
 		XminVals <- Xmin[index1]
 		XmaxVals <- Xmax[index1]
 
@@ -172,7 +172,7 @@ setMethod("transition", signature(x = "RasterBrick"), def = function(x, transiti
 			xy <- cbind(1:ncell(x),getValues(x))
 			xy <- na.omit(xy)
 			dataCells <- xy[,1]
-			adj <- adjacency(x,dataCells,dataCells,directions=directions)
+			adj <- adjacent(x, cells=dataCells, pairs=TRUE, target=dataCells, directions=directions)
 			x.minus.y <- xy[adj[,1],-1]-xy[adj[,2],-1]
 			cov.inv <- solve(cov(xy[,-1]))
 			mahaldistance <- apply(x.minus.y,1,function(x){sqrt((x%*%cov.inv)%*%x)})

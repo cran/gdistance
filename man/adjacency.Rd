@@ -28,7 +28,7 @@ A two column matrix with each row containing a pair of adjacent cells.
 }
 
 \seealso{
-\link[raster:adjacency]{adjacency}
+\link[raster:adjacent]{adjacent}
 }
 
 \author{Jacob van Etten \email{jacobvanetten@yahoo.com}}

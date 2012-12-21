@@ -1,5 +1,5 @@
 import(Matrix) 
-import(igraph0)
+import(igraph)
 importClassesFrom(sp, SpatialPoints, SpatialPointsDataFrame,
 SpatialPixels, SpatialGrid, SpatialPixelsDataFrame, SpatialGridDataFrame)
 importClassesFrom(raster, BasicRaster, Raster)

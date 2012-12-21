@@ -36,20 +36,15 @@ setMethod("costDistance", signature(x = "TransitionLayer", fromCoords = "Coords"
 	costDist <- matrix(NA, nrow=length(fromCoords[,1]),ncol=length(toCoords[,1]))
 	rownames(costDist) <- rownames(fromCoords)
 	colnames(costDist) <- rownames(toCoords)
-		
-	if(isSymmetric(transitionMatrix(x))) {m <- "undirected"} else {m <- "directed"}
-	adjacencyGraph <- graph.adjacency(transitionMatrix(x), mode=m, weighted=TRUE)
+	y <- transitionMatrix(x)
+	if(isSymmetric(y)) {m <- "undirected"} else{m <- "directed"}
+	adjacencyGraph <- graph.adjacency(y, mode=m, weighted=TRUE)
 	
 	E(adjacencyGraph)$weight <- 1/E(adjacencyGraph)$weight
 
 	uniqueFromCells <- unique(fromCells)
 	uniqueToCells <- unique(toCells)		
-	shortestPaths <- matrix(nrow=length(uniqueFromCells),ncol=length(uniqueToCells))
-
-	for (i in 1:length(uniqueFromCells))
-	{
-		shortestPaths[i,] <- shortest.paths(adjacencyGraph, uniqueFromCells[i]-1, mode="out", algorithm="dijkstra")[,uniqueToCells]
-	}
+	shortestPaths <- shortest.paths(adjacencyGraph, v=uniqueFromCells, to=uniqueToCells, mode="out", algorithm="dijkstra")
 
 	index1 <- match(fromCells,uniqueFromCells)
 	index2 <- match(toCells,uniqueToCells)
@@ -77,17 +72,13 @@ setMethod("costDistance", signature(x = "TransitionLayer", fromCoords = "Coords"
 		rownames(costDist) <- rownames(fromCoords)
 		colnames(costDist) <- rownames(fromCoords)
 		
-		if(isSymmetric(transitionMatrix(x))) {m <- "undirected"} else {m <- "directed"}
+		if(isSymmetric(transitionMatrix(x))) {m <- "undirected"} else{m <- "directed"}
 		adjacencyGraph <- graph.adjacency(transitionMatrix(x), mode=m, weighted=TRUE)
 		
 		E(adjacencyGraph)$weight <- 1/E(adjacencyGraph)$weight
 
 		uniqueFromCells <- unique(fromCells)
-		shortestPaths <- matrix(ncol=length(uniqueFromCells),nrow=length(uniqueFromCells))
-		for (i in 1:length(uniqueFromCells))
-		{
-			shortestPaths[i,] <- shortest.paths(adjacencyGraph, uniqueFromCells[i]-1, mode="out")[,uniqueFromCells]
-		}
+		shortestPaths <- shortest.paths(adjacencyGraph, v=uniqueFromCells, to=uniqueFromCells, mode="out")
 		index <- match(fromCells,uniqueFromCells)
 		costDist[] <- shortestPaths[index,index]
 		if(m=="undirected") {costDist <- as.dist(costDist)}

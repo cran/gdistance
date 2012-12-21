@@ -132,8 +132,4 @@
 	return(out)
 }
 
-# International Rice Research Institute
-# Date :  March 2010
-# Version beta
-# Licence GPL v3
 

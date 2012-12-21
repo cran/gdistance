@@ -1,5 +1,5 @@
 \name{transition }
-\alias{transition }
+\alias{transition}
 \alias{transition,RasterLayer-method}
 \alias{transition,RasterBrick-method}
 \title{ Create an object of the class Transition }
@@ -12,7 +12,7 @@ transition (x, transitionFunction, directions, ...)
 \arguments{
   \item{x}{ \code{RasterLayer} or \code{RasterBrick} (raster package) }
   \item{transitionFunction}{ Function to calculate transition values from grid values}
-  \item{directions}{ Directions in which cells are connected (4, 8, 16, or other), see \code{\link[raster]{adjacency}} }
+  \item{directions}{ Directions in which cells are connected (4, 8, 16, or other), see \code{\link[raster:adjacent]{adjacent}} }
   \item{...}{ additional arguments, see methods 1 and 3 below }
 }
 \details{
