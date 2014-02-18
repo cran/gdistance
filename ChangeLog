@@ -1,3 +1,9 @@
+--- version 1.1.5, February 2014
+
+Updated to reflect changes in igraph
+Changes in vignette
+Changes in default method pathInc (overlap)
+
 --- version 1.1.4, December 2012
 
 Class changes to BasicRaster

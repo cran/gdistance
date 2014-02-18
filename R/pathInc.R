@@ -445,7 +445,7 @@ overlap <- function(a, b)
 {
 	aV <- as.vector(a[,rep(1:ncol(a), each=ncol(b))])
 	bV <- as.vector(b[,rep(1:ncol(b), times=ncol(a))])
-	result <- matrix(aV * bV, nrow = nrow(a), ncol=ncol(a)*ncol(b))
+	result <- matrix(pmin(aV, bV), nrow = nrow(a), ncol=ncol(a)*ncol(b))
 	return(result)
 }
 

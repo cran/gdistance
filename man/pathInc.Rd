@@ -23,7 +23,7 @@ pathInc(x, origin, from, to, theta, weight, ...)
   \item{to}{second set of coordinates of the destinations (can be missing)}
   \item{theta}{value > 0 and < 20 (randomised shortest paths) or missing (random walk)}
   \item{weight}{weight matrix -- Reciprocals of the non-zero values are used as weights. If missing, reciprocals of the transition matrix are used.}
-  \item{...}{an extra argument functions to be defined manually (see below)}
+  \item{...}{an extra argument for functions to be defined manually (see below)}
 }
 \details{
 This is a complex wrapper function that calculates to what extent dispersal routes overlap or do not overlap.
@@ -33,6 +33,8 @@ First, the function calculates the trajectories for all "from" and "to" location
 Then, for all unique pairs of trajectories, it calculates the extent to which these trajectories overlap or diverge. These values are given back to the user as a list of (distance) matrices.
 
 If only "from" coordinates are given, the function calculates symmetric distance matrices for all combinations of points in "from". If both "from" and "to" coordinates are given, the function calculates a matrix of values with rows for all locations in "from" and columns for all locations in "to".
+
+Overlap is currently calculated as the minimum values of each pair of trajectories compared. Non-overlap uses the following formula: Nonoverlap = max(0,max(a,b)*(1-min(a,b))-min(a,b)) (see van Etten and Hijmans 2010). 
 
 }
 \value{
@@ -73,6 +75,19 @@ pathInc(trR, origin=sP0, from=sP1)
 
 #TransitionStack as weights
 pathInc(trR, origin=sP0, from=sP1, weight=ts)
+
+#Demonstrate use of an alternative function
+#The current default is to take the minimum of each pair of layers
+
+altoverlap <- function(a, b)
+{
+	aV <- as.vector(a[,rep(1:ncol(a), each=ncol(b))])
+	bV <- as.vector(b[,rep(1:ncol(b), times=ncol(a))])
+	result <- matrix(aV * bV, nrow = nrow(a), ncol=ncol(a)*ncol(b))
+	return(result)
+}
+
+pathInc(trR, origin=sP0, from=sP1, weight=ts, functions=list(altoverlap))
 
 }
 \keyword{ spatial }

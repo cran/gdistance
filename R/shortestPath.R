@@ -28,7 +28,7 @@ setMethod("shortestPath", signature(x = "TransitionLayer", origin = "Coords", go
 	adjacencyGraph <- graph.adjacency(y, mode=mode, weighted=TRUE)
 	E(adjacencyGraph)$weight <- 1/E(adjacencyGraph)$weight
 
-	shortestPaths <- get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal)
+	shortestPaths <- get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal)$vpath
 	
 	if(output=="TransitionLayer")
 	{
