@@ -71,8 +71,9 @@ setMethod("shortestPath", signature(x = "TransitionLayer", origin = "Coords", go
 			linesList[[i]] <- Line(coords)
 		}
 		
-		LinesObject <- Lines(linesList, ID = as.character(1:length(shortestPaths)))
-		result <- SpatialLines(list(LinesObject), proj4string = CRS(projection(x)))
+  # Suggested by Sergei Petrov 
+		LinesObject <- mapply(Lines, slinelist = linesList,  ID = as.character(1:length(shortestPaths)), SIMPLIFY = F)
+		result <- SpatialLines(LinesObject, proj4string = CRS(projection(x)))
 	}
 
 	return(result)

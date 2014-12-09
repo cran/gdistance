@@ -34,7 +34,7 @@ Then, for all unique pairs of trajectories, it calculates the extent to which th
 
 If only "from" coordinates are given, the function calculates symmetric distance matrices for all combinations of points in "from". If both "from" and "to" coordinates are given, the function calculates a matrix of values with rows for all locations in "from" and columns for all locations in "to".
 
-Overlap is currently calculated as the minimum values of each pair of trajectories compared. Non-overlap uses the following formula: Nonoverlap = max(0,max(a,b)*(1-min(a,b))-min(a,b)) (see van Etten and Hijmans 2010). 
+Overlap is currently calculated as the minimum values of each pair of trajectories compared. Non-overlap uses the following formula: Nonoverlap = max(0,max(a,b)*(1-min(a,b))-min(a,b)) (see van Etten and Hijmans 2010). See the last example to learn how to use an alternative function.
 
 }
 \value{

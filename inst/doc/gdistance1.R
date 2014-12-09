@@ -1,4 +1,4 @@
-### R code from vignette source 'gdistance.Rnw'
+### R code from vignette source 'gdistance1.Rnw'
 ### Encoding: ISO8859-1
 
 ###################################################
@@ -17,25 +17,24 @@ y2 <- c(b, a)
 x <- cbind(x1,x2)
 y <- cbind(y1,y2)
 
-par(mfrow=c(1,3), mar = c(5,5,4,2) + 0.1,
-    oma = c(0,0,0,0) + 0.1)
+par(mfrow=c(1,3), mar= c(5,4,4,2) + 1 , oma = c(0,0,0,0) + 0.1, cex.main=2)
 
 x4 <- transition(rex, mean, 4)
 g4 <- graph.adjacency(transitionMatrix(x4), mode="undirected")
 gridLayout <- xyFromCell(x4, 1:ncell(x4))
-plot(g4,layout=gridLayout, edge.color="black", vertex.color="black", vertex.label=NA, main="4 cells")
+plot(g4,layout=gridLayout, edge.color="black", vertex.color="black", vertex.label=NA, main="4 neighbours")
 for(i in 1:dim(x)[1]){lines(x[i,],y[i,], col="lightgray")}
 plot(g4, layout=gridLayout, add=TRUE, edge.color="black", vertex.color="black", vertex.label=NA)
 
 x8 <- transition(rex, mean, 8)
 g8 <- graph.adjacency(transitionMatrix(x8), mode="undirected")
-plot(g8,layout=gridLayout, edge.color="black", vertex.color="black", vertex.label=NA, main="8 cells")
+plot(g8,layout=gridLayout, edge.color="black", vertex.color="black", vertex.label=NA, main="8 neighbours")
 for(i in 1:dim(x)[1]){lines(x[i,],y[i,], col="lightgray")}
 plot(g8, layout=gridLayout, add=TRUE, edge.color="black", vertex.color="black", vertex.label=NA)
 
 x16 <- transition(rex, mean, 16)
 g16 <- graph.adjacency(transitionMatrix(x16), mode="undirected")
-plot(g16, layout=gridLayout, edge.color="black", vertex.color="black", vertex.label=NA, , main="16 cells")
+plot(g16, layout=gridLayout, edge.color="black", vertex.color="black", vertex.label=NA, , main="16 neighbours")
 for(i in 1:dim(x)[1]){lines(x[i,],y[i,], col="lightgray")}
 plot(g16,layout=gridLayout, add=TRUE, edge.color="black", vertex.color="black", vertex.label=NA)
 
@@ -50,6 +49,7 @@ options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
 ###################################################
 ### code chunk number 3: gdistance-1
 ###################################################
+library("gdistance")
 r <- raster(ncol=3,nrow=3)
 r[] <- 1:ncell(r)
 r
@@ -72,7 +72,6 @@ text(r)
 ###################################################
 ### code chunk number 6: gdistance-3
 ###################################################
-library("gdistance")
 r[] <- 1
 tr1 <- transition(r, transitionFunction=mean, directions=8)
 
@@ -208,8 +207,8 @@ pathInc(tr3C, origin, sP)
 ###################################################
 ### code chunk number 25: figure7
 ###################################################
-plot(function(x)exp(-3.5 * abs(x + 0.05)), -1, 1, xlab="slope", ylab="speed (m/s)")
-lines(cbind(c(0,0),c(0,3.5)), lty="longdash")
+plot(function(x)6 * exp(-3.5 * abs(x + 0.05)), -1, 1, xlab="slope", ylab="speed (m/s)")
+lines(cbind(c(0,0),c(0,6)), lty="longdash")
 
 
 ###################################################
@@ -222,8 +221,8 @@ r <- raster(system.file("external/maungawhau.grd",
 ###################################################
 ### code chunk number 27: gdistance-19
 ###################################################
-heightDiff <- function(x){x[2] - x[1]}
-hd <- transition(r,heightDiff,8,symm=FALSE)
+altDiff <- function(x){x[2] - x[1]}
+hd <- transition(r,altDiff,8,symm=FALSE)
 slope <- geoCorrection(hd, scl=FALSE)
 
 
@@ -232,7 +231,7 @@ slope <- geoCorrection(hd, scl=FALSE)
 ###################################################
 adj <- adjacent(r, cells=1:ncell(r), pairs=TRUE, directions=8)
 speed <- slope
-speed[adj] <- exp(-3.5 * abs(slope[adj] + 0.05))
+speed[adj] <- 6 * exp(-3.5 * abs(slope[adj] + 0.05))
 
 
 ###################################################
@@ -282,7 +281,7 @@ pC <- as.matrix(popCoord[c("x","y")])
 
 
 ###################################################
-### code chunk number 34: gdistance.Rnw:724-726
+### code chunk number 34: gdistance1.Rnw:726-728
 ###################################################
 plot(Europe, main="")
 text(pC[,1],pC[,2],unlist(popCoord["Population"]),cex=.7)

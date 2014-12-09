@@ -68,10 +68,12 @@ Class \code{"\linkS4class{Raster}"}.
 \examples{
 showClass("TransitionLayer")
 
-tr <- new("TransitionLayer",nrows=as.integer(36),ncols=as.integer(18),extent=extent(c(xmin=-180,xmax=180,
-          ymin=-90,ymax=90)),crs=CRS("+proj=longlat +datum=WGS84"))
+tr <- new("TransitionLayer", nrows=as.integer(36), ncols=as.integer(18),
+		extent=extent(c(xmin=-180,xmax=180, ymin=-90,ymax=90)),
+		crs=CRS("+proj=longlat +datum=WGS84"))
 
-tr <- new("TransitionLayer",nrows=as.integer(36),ncols=as.integer(18),extent=extent(c(xmin=-180,xmax=180,
-          ymin=-90,ymax=90)),crs=CRS(""))
+tr <- new("TransitionLayer",nrows=as.integer(36),ncols=as.integer(18),
+        extent=extent(c(xmin=-180, xmax=180, ymin=-90,ymax=90)),
+		crs=CRS(""))
 }
 \keyword{classes}
