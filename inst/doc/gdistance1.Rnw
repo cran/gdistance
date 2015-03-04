@@ -67,7 +67,7 @@ The novel distances implemented in the package are used in geographical genetics
 %% \section[About Java]{About \proglang{Java}}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-\section[Introduction: The Crow, the Wolf, and the Drunkard]{Introduction: The Crow, the Wolf, and the Drunkard}
+\section[Introduction: the crow, the wolf, and the drunkard]{Introduction: the crow, the wolf, and the drunkard}
 
 This article describes \pkg{gdistance}, a package written for use in the \proglang{R} environment \citep{R2014}.
 It provides functionality to calculate various distance measures and routes
@@ -80,13 +80,13 @@ taking into account the curvature of the earth.
 Implicit in this distance measure is a route. 
 The great-distance distance could be conceived of as the distance measured along a route of 
 a very efficient traveller who knows where to go and has no obstacles to deal with.
-In common language, this is referred to as a distance \emph{`as the crow flies'}.
+In common language, this is referred to as a distance `as the crow flies'.
 
 Other distance measures also imply a route across geographic space.
-The least-cost distance is implemented in most GIS software and mimics route finding \emph{`as the wolf runs'}\footnote{There are some variations on this expression, involving mostly other animals, or telecom cables.}, 
+The least-cost distance is implemented in most GIS software and mimics route finding `as the wolf runs'\footnote{There are some variations on this expression, involving mostly other animals, or telecom cables.}, 
 taking into account obstacles and the local `friction' of the landscape. 
 Since least-cost distance is affected by the environment, grid-based calculations are necessary.
-Other grid-based distances have been developed based on the random walk or \emph{drunkard's walk}, in which route-finding is a stochastic process.
+Other grid-based distances have been developed based on the random walk or drunkard's walk, in which route-finding is a stochastic process.
 
 Package \pkg{gdistance} was designed to determine such grid-based distances and routes 
 and to make it possible to use these measures in combination with other functionality available within \proglang{R}. 
@@ -113,14 +113,18 @@ Distance and route calculations on rasters rely on graph theory.
 So as a first step, rasters are converted into graphs by connecting cell centres to each other, which become the nodes in the graph.
 This can be done in various ways (Figure~\ref{fig:zero}).
 \begin{itemize}
-\item{Cells can be connected orthogonally to their four immediate neighbours, the \emph{von Neumann neighbourhood}.}
-\item{Cells can be connected with their eight orthogonal and diagonal nearest neighbours, the \emph{Moore neighbourhood}. 
-The resulting graph is called the \emph{king's graph}, because it reflects all the legal movements of the king in chess.
+\item{Cells can be connected orthogonally to their four immediate neighbours, the von Neumann neighbourhood.}
+\item{Cells can be connected with their eight orthogonal and diagonal nearest neighbours, the Moore neighbourhood. 
+The resulting graph is called the king's graph, because it reflects all the legal movements of the king in chess.
 This is the most common and often only way to connect grids in GIS software.}
 \item{Connecting in 16 directions combines king's and knight's moves. 
 The function r.cost in the software GRASS \citep{grass} has this as an option, which inspired its implementation in \pkg{gdistance}. 
 The section on distance transforms in \cite{deSmith2009} also discusses 16-cell neighbourhoods. Connecting in 16 directions may increase the accuracy of the calculations.}
 \end{itemize}
+
+<<echo=false>>=
+options(width=60)
+@
 
 \begin{figure}[h]
 \begin{center}
@@ -179,7 +183,7 @@ In \pkg{gdistance}, we refer collectively to these matrices to represent graphs 
 These transition matrices are the central object in the package; all distance calculations need one or more transition matrices as an input.
 
 In \pkg{gdistance}, conductance rather than resistance values are expected in the transition matrix.
-An important advantage of using conductance is that it makes it possible to store values in computer memory very efficiently, using so-called \emph{sparse} matrices.
+An important advantage of using conductance is that it makes it possible to store values in computer memory very efficiently, using so-called sparse matrices.
 Sparse matrices only store non-zero values and indices that locate these values in the rows and columns of the matrix. Zero values are not being stored in memory.
 Conductance matrices usually contain mainly zeros, because cells are connected only with adjacent cells, and the conductance for direct connections between remote cells is zero.
 This would not be the case if resistance matrices were used, as resistance is infinite ($\infty$) between unconnected cells and these values would fill up the matrix.
@@ -219,8 +223,8 @@ or more sophisticated ones.}
 \item{A second type of route-finding is the random walk, which has no predetermined destination 
 (a `drunkard's walk'). 
 Commute distance represents the random walk commute time, 
-e.g. the average number of edges traversed during a random walk from an starting point on the graph to a destination point and back again to the starting point \citep{chandra1996}. 
-Resistance distance reflects the average travel \emph{cost} during this walk \citep{mcrae2006}. 
+e.g., the average number of edges traversed during a random walk from an starting point on the graph to a destination point and back again to the starting point \citep{chandra1996}. 
+Resistance distance reflects the average travel cost during this walk \citep{mcrae2006}. 
 When taken on the same graph these two measures differ only in their scaling \citep{kivimaki2012}.
 Commute and resistance distances 
 are calculated using the analogy with an electrical circuit \cite[see][for an introduction]{doyle1984}.
@@ -232,7 +236,7 @@ When $\theta$ approaches zero, the randomised shortest paths approach a random w
 \cite{etten2010} applied randomised shortest paths in geospatial analysis (and see Example 2 below).}
 \end{itemize}
 
-\section{Raster Basics}
+\section{Raster basics}
 
 Analyses in \pkg{gdistance} start with one or more rasters.
 For this, it relies on another \proglang{R} package, \pkg{raster} \citep{hijmans2012}.
@@ -303,17 +307,17 @@ plot(r, main="r")
 text(r)
 @
 
-\section[Transition* Classes]{\code{Transition*} Classes}
+\section[Transition* classes]{\code{Transition*} classes}
 
 As explained in Section 2 on the theory behind \pkg{gdistance}, transition matrices are the backbone of the package.
 The central classes in \pkg{gdistance} are \code{TransitionLayer} and \code{TransitionStack}. 
 Most functions in the package have an object of one of these classes as input or output.
 
 \code{Transition*} objects can be constructed from an object of class \code{Raster*}.
-The class \code{Transition*} takes the necessary geographic references (projection, resolution, extent) from the original \code{Raster*} object. 
+A \code{Transition*} object takes the necessary geographic references (projection, resolution, extent) from the original \code{Raster*} object. 
 It also contains a matrix which represents a transition from one cell to another in the grid.
 Each row and column in the matrix represents a cell in the original \code{Raster*} object.
-Row 1 and column 1 in the transition matrix corresponds to cell 1 in the original raster, row 2 and column 2 to cell 2, and so on.
+Row 1 and column 1 in the transition matrix correspond to cell 1 in the original raster, row 2 and column 2 to cell 2, and so on.
 For example, the raster we just created would produce a 9 x 9 transition matrix with rows and columns numbered from 1 to 9 (see Figure~\ref{fig:two} below).
 
 The matrix is stored in a sparse format, as discussed in Section 2.
@@ -366,9 +370,9 @@ tr3 <- sqrt(tr1)
 Also, it is possible to extract and replace values in the matrix using indices,
 in a similar way to the use of indices with simple matrices.
 <<gdistance-7>>=
-tr3[cbind(1:9,1:9)] <- tr2[cbind(1:9,1:9)]
-tr3[1:9,1:9] <- tr2[1:9,1:9]
-tr3[1:5,1:5]
+tr3[cbind(1:9, 1:9)] <- tr2[cbind(1:9, 1:9)]
+tr3[1:9, 1:9] <- tr2[1:9, 1:9]
+tr3[1:5, 1:5]
 @
 
 The functions \code{adjacent} (from \pkg{raster}) and \code{adjacencyFromTransition} (from \pkg{gdistance}) can be used to create indices.
@@ -416,11 +420,11 @@ The default, shown in Figure~\ref{fig:three}, takes the column-wise means of the
 plot(raster(tr3), main="raster(tr3)")
 @
 \end{center}
-\caption{Visualizing a TransitionLayer using the function \code{raster}}
+\caption{Visualizing a TransitionLayer using the function \code{raster}.}
 \label{fig:three}
 \end{figure}
 
-\section{Correcting Transition Matrix Values}
+\section{Correcting transition matrix values}
 The function \code{transition} calculates transition values based on the values of adjacent cells in the input raster.
 However, diagonal neighbours are more remote from each other than orthogonal neighbours.
 Secondly, on equirectangular (longitude-latitude) grids, West-East connections are longer at the equator and become shorter towards the poles, as the meridians approach each other.
@@ -435,7 +439,7 @@ tr2C <- geoCorrection(tr2, type="c", multpl=FALSE)
 
 For least-cost type distances and routes, this works fine.
 However, as explained in Section 2 above, this does not work equally well for commute distances (random walks).
-The function geoCorrection corrects this distortion by multiplying the 
+The function \code{geoCorrection} corrects this distortion by multiplying the 
 North-South transition values with the cosine of the average latitude of the cell centres.
 This type of correction is done by setting the argument \code{type} to \code{"r"}.
 
@@ -469,9 +473,9 @@ and directions of cell connections.
 We need to take special care that the geo-correction multiplication matrix (\code{CorrMatrix}) contains all non-zero values that are
 present in the \code{Transition*} object with which it will be multiplied (\code{tr3} in this case).
 
-\section{Calculating Distances}
+\section{Calculating distances}
 After obtaining the geographically corrected \code{Transition*} object, as  we can calculate distances between points.
-It is important to note that all distance functions require a \code{Transition*} object with \emph{conductance} values,
+It is important to note that all distance functions require a \code{Transition*} object with conductance values,
 even though distances will be expressed in 1/conductance (friction or resistance) units (see Section 3).
 
 To calculate distances, we need to have the coordinates of point locations.
@@ -493,7 +497,7 @@ rSPDistance(tr3R, sP, sP, theta=1e-12, totalNet="total")
 The \code{costDistance} function relies on the package \pkg{igraph} \citep{csardi2006} for the underlying calculation.
 It gives a symmetric or asymmetric distance matrix, depending on the \code{TransitionLayer} that is used as input.
 
-Commute distance represents the random walk commute time, e.g. the number of cells traversed on the trip \citep{chandra1996}.
+Commute distance represents the random walk commute time, e.g., the number of cells traversed on the trip \citep{chandra1996}.
 
 \code{rSPDistance} gives the cost incurred during the same walk ($\theta$ approaches zero, so this is the cost incurred during a random walk, see Section 2). 
 To obtain the commute costs we sum the corresponding off-diagonal elements: $d_{ij} + d_{ji}$. This is the distance of a commute from $i$ to $j$ and back from $j$ to $i$. 
@@ -502,7 +506,7 @@ This is because the \code{TransitionLayer} object has been scaled,
 so that transition costs are close to unit for each step and the total number of steps and the total distance are of the same order of magnitude.
 }
 
-\section{Dispersal Paths}
+\section{Dispersal paths}
 
 To determine dispersal paths of a (constrained) random walk, we use the function \code{passage}. 
 This function can be used for both random walks and randomised shortest paths.
@@ -526,17 +530,17 @@ plot(rSPraster, main="rSPraster")
 \label{fig:four}
 \end{figure}
 
-\section{Path Overlap and Non-Overlap}
+\section{Path overlap and non-overlap}
 One of the specific uses for which package gdistance was created,
 is to look at trajectories coming from the same source \citep{etten2010}. 
 The degree of coincidence of two trajectories can be visualized by calculating the minimum of the probabilities of passage (Figure~\ref{fig:five}).
-With a more complex formula, we can approximate the non-overlapping part of the trajectory (Figure~\ref{fig:six}).
+With a more complex formula, we can approximate the non-overlapping part of the trajectory (Figure~\ref{fig:six}). This is done in the following code.
 \vspace{-1.0em}
 <<gdistance-15>>=
 r1 <- passage(tr3C, origin, sP[1,], theta=1)
 r2 <- passage(tr3C, origin, sP[3,], theta=1)
-rJoint <- min(r1, r2) #Figure 6
-rDiv <- max(max(r1, r2) * (1 - min(r1, r2)) - min(r1, r2), 0) #Figure 7
+rJoint <- min(r1, r2)
+rDiv <- max(max(r1, r2) * (1 - min(r1, r2)) - min(r1, r2), 0) 
 @
 \vspace{-1.0em}
 \begin{figure}[H]
@@ -571,7 +575,7 @@ The default for \code{type} is to calculate joint and divergent length of the di
 pathInc(tr3C, origin, sP)
 @
 
-\section{Example 1: Hiking around Maunga Whau}
+\section{Example 1: hiking around Maunga Whau}
 The previous examples were somewhat theoretical, based on randomly generated values.
 More realistic examples serve to illustrate the various uses that can be given to this package.
 
@@ -616,7 +620,7 @@ m_{ij} = (z_j - z_i) / d_{ij}
 The units of altitude and distance should be identical.
 Here, we use meters for both.
 First, we calculate the altitudinal differences between cells.
-Then we use the function \code{geoCorrection} to divide by the distance between cells.
+Then we use the \code{geoCorrection} function to divide by the distance between cells.
 <<gdistance-19, keep.source=TRUE>>=
 altDiff <- function(x){x[2] - x[1]}
 hd <- transition(r,altDiff,8,symm=FALSE)
@@ -658,7 +662,7 @@ t = d / s
 \label{formula4}
 \end{math}
 
-In fact, the conductance values we have calculated are the \emph{reciprocal} of travel time ($1/t$).
+In fact, the conductance values we have calculated are the reciprocal of travel time ($1/t$).
 
 \begin{math}
 1 / t = s / d = C
@@ -673,8 +677,8 @@ We test if the quickest path from A to B is the same as the quickest path from B
 The following code creates the shortest paths.
 
 <<gdistance-22>>=
-A <- c(2667670,6479000)
-B <- c(2667800,6479400)
+A <- c(2667670, 6479000)
+B <- c(2667800, 6479400)
 AtoB <- shortestPath(x, A, B, output="SpatialLines")
 BtoA <- shortestPath(x, B, A, output="SpatialLines")
 @
@@ -685,8 +689,8 @@ And this code was used to make Figure~\ref{fig:eight}.
 plot(r, main="")
 lines(AtoB, col="red", lwd=2)
 lines(BtoA, col="blue")
-text(A[1]-10,A[2]-10,"A")
-text(B[1]+10,B[2]+10,"B")
+text(A[1] - 10, A[2] - 10, "A")
+text(B[1] + 10, B[2] + 10, "B")
 @
 
 A small part of the A-B (red) and B-A (blue) lines in Figure~\ref{fig:eight} do not overlap.
@@ -703,9 +707,9 @@ This is a consequence of the asymmetry of the Hiking Function.
 \label{fig:eight}
 \end{figure}
 \clearpage
-\section{Example 2: Geographical Genetics}
+\section{Example 2: Geographical genetics}
 
-A correlation between genetic differentiation and geographic distance of individuals and populations is expected due to a mechanism known as \emph{isolation by distance} \citep{wright1943}.
+A correlation between genetic differentiation and geographic distance of individuals and populations is expected due to a mechanism known as isolation by distance \citep{wright1943}.
 This correlation is expected when random, symmetric dispersal occurs in homogeneous geographic spaces.
 For random dispersal in heterogeneous landscapes, recent work has shown that genetic differentiation correlates with the resistance distance between their locations \citep{mcrae2006}.
 Let's look at human genetic diversity in Europe, using the data presented by \cite{bal2010}.
@@ -780,7 +784,7 @@ At least at first sight, the overlap of dispersal routes explains the spatial pa
 The negative sign of the last correlation coefficient was expected, as more overlap in routes is associated with lower genetic distance.
 Additional work would be needed to improve predictions and compare the different models more rigorously.
 
-\section{Future Work}
+\section{Future work}
 Improvements of \pkg{gdistance} and methodological refinements are expected in various areas. 
 \begin{itemize}
 \item{
@@ -798,7 +802,7 @@ This should bring more precision to random walk calculations in geospatial analy
 Comparing the results of grid-based calculations to continuous space simulations or analytical solutions would be the way forward \citep{birch2006}.
 }
 \end{itemize}
-\section{Final Remarks}
+\section{Final remarks}
 Questions about the use of \pkg{gdistance} can be posted on the r-sig-geo email list.
 Bug reports and requests for additional functionality can be mailed to jacobvanetten@yahoo.com.
 

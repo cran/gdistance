@@ -1,4 +1,8 @@
---- version 1.1.6, February 2014
+--- version 1.1.7, March 2015
+
+Final touches for submission to JSS
+
+--- version 1.1.6, January 2015
 
 Final touches for submission to JSS
 Correction in shorthestPath (bug reported by Sergei Petrov)

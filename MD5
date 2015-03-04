@@ -1,5 +1,5 @@
-0cda1560b9f4ab83e1620b1adb6a75dc *ChangeLog
-3212a966d874584d71c42c074802fa5c *DESCRIPTION
+d30d82d5c679e99ff2b9c4e5a7e842a9 *ChangeLog
+19cc075a9188f3f79f304214a0a06934 *DESCRIPTION
 cc0e420bb78c41e961f694d8395b3c05 *NAMESPACE
 f3015a46cbeef70a5e22556bb16f4e33 *R/AAATransition-class.R
 822f4bef5e2d8b032111f6f9253809c0 *R/Coords-class.R
@@ -27,9 +27,9 @@ add7f7bb70f16d2e3e7ad66f925c18b8 *R/stack.R
 52415a9256ec0863a3528792fd613774 *build/vignette.rds
 4ddb0aae326a32fdb1d282a4982f5810 *data/genDist.RData
 7588eaf113f539da74e3fd8c09cbdd4d *data/popCoord.RData
-2e02922616cde9cb40ddb0218864e1d8 *inst/doc/gdistance1.R
-1e0ecceb941b7aaadf767e5abe54bd64 *inst/doc/gdistance1.Rnw
-c9817e9952a5b0da2be9d64e1b53110e *inst/doc/gdistance1.pdf
+782c9cfd9062c43b415ac770bd2fb524 *inst/doc/gdistance1.R
+5c92c252c012e320bff13ca0744c2440 *inst/doc/gdistance1.Rnw
+04ec338ce9b700d9085103798f0ee2f5 *inst/doc/gdistance1.pdf
 61f5febfc8a777f61bf39c34519dab01 *inst/external/Europe.grd
 92464a24f2ea19512becbc8ae5657eb9 *inst/external/Europe.gri
 bee7a1270ab9a023241e2cb05c499b16 *inst/external/maungawhau.grd
@@ -57,6 +57,6 @@ e1f6aaf1aafc316c32c94c1b17e731b5 *man/rSPDistance.Rd
 486b5254b50e6359635307e8ac8db3bc *man/sumT.Rd
 50834c1261107cfc12998a9f19ca4a42 *man/summary-methods.Rd
 2c4deb82dd975517e042a94b76ed6820 *man/transition.Rd
-1e0ecceb941b7aaadf767e5abe54bd64 *vignettes/gdistance1.Rnw
-4752f74fe8bca391bf92372745feedc0 *vignettes/gdistance1.bib
+5c92c252c012e320bff13ca0744c2440 *vignettes/gdistance1.Rnw
+dcbfe179429a9563cb0ae52377d4047d *vignettes/gdistance1.bib
 b9564ddd59a06782310989e8f33db55e *vignettes/jsslogo.jpg
