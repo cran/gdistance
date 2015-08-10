@@ -1,17 +1,20 @@
 Package: gdistance
 Type: Package
 Title: Distances and Routes on Geographical Grids
-Version: 1.1-7
-Date: 4-March-2015
+Version: 1.1-9
+Date: 2015-08-10
 Author: Jacob van Etten
 Depends: R (>= 2.8.0), raster (>= 1.9-19), methods, igraph (>= 0.7.0),
         Matrix
-Imports: sp
+Imports: sp, stats
 Maintainer: Jacob van Etten <jacobvanetten@yahoo.com>
 Description: Calculate distances and routes on geographic grids.
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2015-03-04 22:37:03 UTC; JVAN
-NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2015-03-11 16:13:48
+Repository/R-Forge/Project: gdistance
+Repository/R-Forge/Revision: 254
+Repository/R-Forge/DateTimeStamp: 2015-08-10 21:34:13
+Date/Publication: 2015-08-11 17:40:28
+NeedsCompilation: no
+Packaged: 2015-08-10 21:46:34 UTC; rforge

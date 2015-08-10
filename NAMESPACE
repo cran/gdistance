@@ -2,6 +2,7 @@ import(raster)
 import(methods)
 import(Matrix) 
 importFrom(igraph, clusters, E, "E<-", get.shortest.paths, graph.adjacency, shortest.paths)
+importFrom(stats, as.dist, cov, na.omit)
 importClassesFrom(sp, SpatialPoints, SpatialPointsDataFrame,
 SpatialPixels, SpatialGrid, SpatialPixelsDataFrame, SpatialGridDataFrame)
 importFrom(sp, coordinates, CRS, Line, Lines, SpatialLines)

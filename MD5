@@ -1,6 +1,6 @@
-d30d82d5c679e99ff2b9c4e5a7e842a9 *ChangeLog
-19cc075a9188f3f79f304214a0a06934 *DESCRIPTION
-cc0e420bb78c41e961f694d8395b3c05 *NAMESPACE
+89d2a5b3f791ea1e178c3db581d6895d *ChangeLog
+b59e61da9c2633a067391a7858030633 *DESCRIPTION
+3d0828e45248576e282523f09d12302e *NAMESPACE
 f3015a46cbeef70a5e22556bb16f4e33 *R/AAATransition-class.R
 822f4bef5e2d8b032111f6f9253809c0 *R/Coords-class.R
 d2604e282a8c9a7d39c98dce743a1972 *R/Summary-methods.R
@@ -24,12 +24,12 @@ add7f7bb70f16d2e3e7ad66f925c18b8 *R/stack.R
 6f87bbdbbf748468a234627df3c5b99b *R/sumT.R
 63e58c67e08aed29ddcc13da7609fa4f *R/summary.R
 3c5247a06e0b019362a3a32b7b14d165 *R/transition.R
-52415a9256ec0863a3528792fd613774 *build/vignette.rds
-4ddb0aae326a32fdb1d282a4982f5810 *data/genDist.RData
-7588eaf113f539da74e3fd8c09cbdd4d *data/popCoord.RData
-782c9cfd9062c43b415ac770bd2fb524 *inst/doc/gdistance1.R
-5c92c252c012e320bff13ca0744c2440 *inst/doc/gdistance1.Rnw
-04ec338ce9b700d9085103798f0ee2f5 *inst/doc/gdistance1.pdf
+f6ef267ff06c2b6b52bff8c8a03c032a *build/vignette.rds
+e3d635cbc073ac9194398cc54644a84d *data/genDist.RData
+2442a2f6704da87aa755600311d53ebc *data/popCoord.RData
+cf9e1a807114b283aa6124ef6941de2e *inst/doc/gdistance1.R
+f8f7e5a54e092f1c1dc32e7d8e45a4fc *inst/doc/gdistance1.Rnw
+710574dab83c7255686f8d75a05d7f8c *inst/doc/gdistance1.pdf
 61f5febfc8a777f61bf39c34519dab01 *inst/external/Europe.grd
 92464a24f2ea19512becbc8ae5657eb9 *inst/external/Europe.gri
 bee7a1270ab9a023241e2cb05c499b16 *inst/external/maungawhau.grd
@@ -43,7 +43,6 @@ d38b96b27c2ea1a5a0653ddc1261bab9 *man/Transition-class.Rd
 753de7419a1dc4ef1c663a0732ee5561 *man/adjacency.Rd
 3ed6a96b0fb9bc3b4d52503c167971a0 *man/commuteDistance.Rd
 9378d32d8e11c7c29db0a8cbb01f1c75 *man/costDistance.Rd
-e510ac37a4496a7855d99b05eaf8e634 *man/gdistance-internal.Rd
 5783140355dee3a62d98220f85a7b5ca *man/gdistance-package.Rd
 04c2f7b352cef98a05428618b88a5b76 *man/genDist.Rd
 62b10f8dd0c69cbef54f91a651f17774 *man/geoCorrection.Rd
@@ -57,6 +56,6 @@ e1f6aaf1aafc316c32c94c1b17e731b5 *man/rSPDistance.Rd
 486b5254b50e6359635307e8ac8db3bc *man/sumT.Rd
 50834c1261107cfc12998a9f19ca4a42 *man/summary-methods.Rd
 2c4deb82dd975517e042a94b76ed6820 *man/transition.Rd
-5c92c252c012e320bff13ca0744c2440 *vignettes/gdistance1.Rnw
-dcbfe179429a9563cb0ae52377d4047d *vignettes/gdistance1.bib
+f8f7e5a54e092f1c1dc32e7d8e45a4fc *vignettes/gdistance1.Rnw
+72de1c9cecfdd5026b8fd526316aa0ed *vignettes/gdistance1.bib
 b9564ddd59a06782310989e8f33db55e *vignettes/jsslogo.jpg
