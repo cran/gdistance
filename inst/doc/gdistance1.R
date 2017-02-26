@@ -2,7 +2,7 @@
 ### Encoding: UTF-8
 
 ###################################################
-### code chunk number 1: gdistance1.Rnw:125-126
+### code chunk number 1: gdistance1.Rnw:126-127
 ###################################################
 options(width=60)
 
@@ -314,7 +314,7 @@ pC <- as.matrix(popCoord[c("x","y")])
 
 
 ###################################################
-### code chunk number 36: gdistance1.Rnw:772-775
+### code chunk number 36: gdistance1.Rnw:783-786
 ###################################################
 plot(Europe, main="", xlab="Longitude (degrees)", ylab="Latitude (degrees)",
      legend=FALSE)

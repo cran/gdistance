@@ -1,5 +1,5 @@
-%\documentclass[nojss,shortnames]{jss}
-\documentclass[article,shortnames]{jss}
+\documentclass[nojss,shortnames]{jss}
+%\documentclass[article,shortnames]{jss}
 \usepackage[utf8]{inputenc}
 \usepackage{float}
 \restylefloat{figure}
@@ -28,6 +28,7 @@ Also the corresponding routes or probabilities of passing each cell can be deter
 The package implements classes to store the data about the probability or cost of transitioning from one cell to another on a grid in a memory-efficient sparse format. 
 These classes make it possible to manipulate the values of cell-to-cell movement directly, which offers flexibility and the possibility to use asymmetric values.
 The novel distances implemented in the package are used in geographical genetics (applying circuit theory), but may also have applications in other fields of geospatial analysis.
+This vignette was published as an article in the Journal of Statistical Software \citep{etten2017}.
 }
 \Keywords{geospatial analysis, landscape genetics, circuit theory, connectivity, dispersal, travel, least-cost path, least-cost distance, random walk, \proglang{R}}
 \Plainkeywords{geospatial analysis, landscape genetics, circuit theory, connectivity, dispersal, travel, least-cost path, least-cost distance, random walk, grid, R} %% without formatting
@@ -69,7 +70,7 @@ The novel distances implemented in the package are used in geographical genetics
 
 \section[Introduction: the crow, the wolf, and the drunkard]{Introduction: the crow, the wolf, and the drunkard}
 
-This article describes \pkg{gdistance}, a package written for use in the \proglang{R} environment \citep{R2014}.
+This vignette describes \pkg{gdistance}, a package written for use in the \proglang{R} environment \citep{R2014}.
 It provides functionality to calculate various distance measures and routes
 in heterogeneous geographic spaces represented as grids.
 Distance is fundamental to geospatial analysis \citep{tobler1970}.
@@ -605,10 +606,12 @@ Determining the fastest route between two points in complex terrain is useful fo
 Tobler's Hiking Function provides a rough estimate of the maximum hiking speed ($s$) given the slope of the terrain ($m$) \citep{tobler1993}.
 The maximum speed of off-path hiking (in m/s) is:
 
+\begin{center}
 \begin{math}
 s = 6 e^{-3.5 |m + 0.05|}
 \label{formula1}
 \end{math}
+\end{center}
 
 Note that the function is not symmetric around 0 (see Figure~\ref{fig:seven}). Hikers walk fastest on gently downward slopes ($m = -0.05$), where they can walk faster than on flat terrain ($m = 0$).
 
@@ -633,10 +636,12 @@ r <- raster(system.file("external/maungawhau.grd", package="gdistance"))
 
 The Hiking Function requires the slope ($m$) as input, which can be calculated from the altitude ($z$) and distance between cell centres ($d$).
 
+\begin{center}
 \begin{math}
 m_{ij} = (z_j - z_i) / d_{ij}
 \label{formula2}
 \end{math}
+\end{center}
 
 The units of altitude and distance should be identical.
 Here, we use meters for both.
@@ -684,24 +689,30 @@ What do these values mean?
 The function \code{geoCorrection} divides the values in the matrix between the distance between cell centres.
 So, with our last command we calculated conductance ($C$) as follows:
 
+\begin{center}
 \begin{math}
 C = s / d
 \label{formula3}
 \end{math}
+\end{center}
 
 This looks a lot like a measure that we are more familiar with, travel time ($t$): 
 
+\begin{center}
 \begin{math}
 t = d / s
 \label{formula4}
 \end{math}
+\end{center}
 
 In fact, the conductance values we have calculated are the reciprocal of travel time ($1/t$).
 
+\begin{center}
 \begin{math}
 1 / t = s / d = C
 \label{formula5}
 \end{math}
+\end{center}
 
 Maximizing the reciprocal of travel time is exactly equivalent to minimizing travel time.
 Distances calculated with this conductance matrix represent travel time according to the Hiking Function.

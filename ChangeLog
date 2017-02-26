@@ -1,3 +1,8 @@
+--- version 1.2-1, February 2017
+
+Changes to reflect publication in JSS
+Bug fixed in AccCost (mode="out"), thanks to Henjo de Knegt
+
 --- version 1.1.9, July 2015
 
 Changes to vignette based on JSS review
