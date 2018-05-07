@@ -15,8 +15,8 @@ setMethod("accCost", signature(x = "TransitionLayer", fromCoords = "Coords"), de
 			fromCells <- fromCells[!is.na(fromCells)]
 		}
 		tr <- transitionMatrix(x)
-		tr <- rBind(tr,rep(0,nrow(tr)))
-		tr <- cBind(tr,rep(0,nrow(tr)))
+		tr <- rbind(tr,rep(0,nrow(tr)))
+		tr <- cbind(tr,rep(0,nrow(tr)))
 	
 		startNode <- nrow(tr) #extra node to serve as origin
 		adjP <- cbind(rep(startNode, times=length(fromCells)), fromCells)

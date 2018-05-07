@@ -40,11 +40,13 @@ Distances can be calculated following these steps.
 Jacob van Etten \email{jacobvanetten@yahoo.com}
 }
 \references{
-Cite this package as:
-van Etten, J. 2017. R Package gdistance: Distances and routes on geographical grids. \emph{Journal of Statistical Software}, 76(13), 1-21. doi:10.18637/jss.v076.i13
+  Ray, N. 2005. PATHMATRIX: a geographical information system tool to compute effective distances among samples. \emph{Molecular Ecology Notes} 5, 177 - 180.
+  \url{http://cmpg.unibe.ch/software/pathmatrix/}
 
-For functions using random walks, cite:
-van Etten, J., and Hijmans, R.J. 2010. A geospatial modelling approach integrating archaeobotany and genetics to trace the origin and dispersal of domesticated plants. \emph{PLoS ONE}, 5(8), p. e12060. doi:10.1371/journal.pone.0012060
+  McRae, B.H. 2006. Isolation by resistance. \emph{Evolution} 60(8), 1551 - 1561.
+  
+  McRae B.H., B.G. Dickson, and T. Keitt. 2008. Using circuit theory to model connectivity in ecology, evolution, and conservation. \emph{Ecology} 89:2712-2724.
+  \url{http://www.circuitscape.org}
 }
 \keyword{package}
 \keyword{spatial}
