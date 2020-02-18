@@ -1,9 +1,5 @@
-# Author: Jacob van Etten jacobvanetten@yahoo.com
-# International Rice Research Institute
-# Date :  January 2009
-# Version 1.0
-# Licence GPL v3
-
+#' @aliases raster,TransitionLayer-method
+#' @author Jacob van Etten
 setMethod('raster', signature(x='TransitionLayer'), 
 		function(x, reduceMethod="NZcolMeans") {
 		rs <- as(x,"RasterLayer")
@@ -22,3 +18,4 @@ setMethod('raster', signature(x='TransitionLayer'),
 		return(rs)
 	}
 )
+

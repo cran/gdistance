@@ -1,17 +1,64 @@
-# Author: Jacob van Etten jacobvanetten@yahoo.com
-# International Rice Research Institute
-# Date :  January 2009
-# Version 1.0
-# Licence GPL v3
-
-#TODO matrixValues == "resistance"
-
+#' Arithmetic and mathematical operations with objects of Transition* classes
+#' 
+#' Standard arithmetic operators for computations with \code{Transition*} 
+#' objects and numeric values. Transition objects must have the same extent
+#' and resolution. All arithmetic and mathematical operations that work on 
+#' the sparse matrices are available for \code{Transition*} objects. 
+#' 
+#' @name ArithMath-methods
+#' @docType methods
+#' @keywords methods
+#' @keywords math
+#' @keywords spatial
+#' 
+#' @aliases Arith-methods
+#' @aliases Arith,ANY,TransitionLayer-method
+#' @aliases Arith,TransitionLayer,ANY-method
+#' @aliases Arith,TransitionLayer,TransitionLayer-method
+#' @aliases Arith,TransitionLayer,TransitionStack-method
+#' @aliases Arith,TransitionStack,TransitionLayer-method
+#' @aliases Arith,TransitionStack,ANY-method
+#' @aliases Arith,ANY,TransitionStack-method
+#' @aliases Arith,TransitionLayer,TransitionStack-method
+#' @aliases Math-methods
+#' @aliases Math,TransitionLayer-method
+#' @aliases Math,TransitionStack-method
+#' 
+#' @param e1 objects
+#' @param e2 objects
+#' @return  \code{Transition*} object or numeric.
+#' @examples 
+#' #create a new raster and set all its values to unity.
+#' raster <- raster(nrows=18, ncols=36) 
+#' raster <- setValues(raster,rep(1,ncell(raster)))
+#' 
+#' #create TransitionLayer objects
+#' tr1 <- transition(raster,mean,4)
+#' tr2 <- tr1
+#' 
+#' #arithmetic operations
+#' tr3 <- tr1 * tr2
+#' tr4 <- tr3 * 4
+#' 
+#' #mathematical operations
+#' tr5 <- sqrt(tr4)
+#' @author Jacob van Etten
+#' @exportMethod [
+#' @exportMethod [<-
+#' @exportMethod ==
+#' @exportMethod coerce
+#' @exportMethod Ops
+#' @exportMethod Compare
+#' @exportMethod Logic
+#' @exportMethod Arith
+#' @exportPattern "^[^\\.]"
 setMethod("Arith", signature(e1 = "TransitionLayer", e2 = "TransitionLayer"),
 		function(e1, e2)
 		{
 			if(as(e1, "BasicRaster") == as(e2, "BasicRaster"))
 				{
-					matrix.dsC <- callGeneric(transitionMatrix(e1),transitionMatrix(e2))
+					matrix.dsC <- callGeneric(transitionMatrix(e1), 
+					                          transitionMatrix(e2))
 					transitionMatrix(e1) <- matrix.dsC
 					e1@transitionCells <- 1:ncell(e1)
 					return(e1)
@@ -57,7 +104,6 @@ setMethod("==", signature(e1 = "TransitionLayer", e2 = "TransitionLayer"),
 )
 
 #TransitionStack
-
 setMethod("Arith", signature(e1 = "TransitionLayer", e2 = "TransitionStack"),
 		function(e1, e2)
 		{
@@ -143,3 +189,5 @@ setMethod("==", signature(e1 = "TransitionStack", e2 = "TransitionStack"),
 			return(cond)
 		}
 )
+
+#TO DO matrixValues == "resistance"

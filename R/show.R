@@ -1,4 +1,8 @@
-setMethod ("show" , "TransitionLayer",
+#' @aliases show,TransitionLayer-method
+#' @aliases show,TransitionStack-method
+#' @author Jacob van Etten
+#' @exportMethod show 
+setMethod("show" , "TransitionLayer",
            function(object) {
              callNextMethod(object)
              cat("values      :", matrixValues(object), "\n")
@@ -6,7 +10,9 @@ setMethod ("show" , "TransitionLayer",
            }
            )
 
-setMethod ("show" , "TransitionStack",
+
+#' @exportMethod show 
+setMethod("show" , "TransitionStack",
            function(object) {
              callNextMethod(object)
              cat("nlayers      :", nlayers(object), "\n")              

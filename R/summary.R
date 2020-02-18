@@ -3,18 +3,20 @@
 # Version 1.0
 # Licence GPL v3
 
-
+#' @exportMethod summary
 if (!isGeneric("summary")) {
 	setGeneric("summary", function(object, ...)
 		standardGeneric("summary"))
 }	
 
+#' @exportMethod summary
 setMethod('summary', signature(object='TransitionLayer'), 
 	function(object, ...) {
 		summary(transitionMatrix(object))
 	}
 )
 
+#' @exportMethod summary
 setMethod('summary', signature(object='TransitionStack'), 
 	function(object, ...) {
 		n <- nlayers(object)
@@ -26,3 +28,4 @@ setMethod('summary', signature(object='TransitionStack'),
 		return(result)
 	}
 )
+

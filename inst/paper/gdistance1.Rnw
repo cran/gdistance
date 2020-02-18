@@ -60,6 +60,7 @@ This vignette was published as an article in the Journal of Statistical Software
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 %% \SweaveOpts{concordance=TRUE}
 
 %% include your article here, just as usual
