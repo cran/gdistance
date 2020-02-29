@@ -1,6 +1,6 @@
-26fdf334c246440b6f1fcb509f55c710 *DESCRIPTION
-fbe2d3bf18af43b250cfb893683bfb42 *NAMESPACE
-b650baf73331bccf8708632eac43f7b8 *NEWS.md
+6aa08330b9e2c78b343d0458407a999a *DESCRIPTION
+9a06c5844979c29105a865a05d57513b *NAMESPACE
+c7610bb38386f73a30bc14b055baf1a4 *NEWS.md
 5c7856bfbd44bd025b286bc32455bb56 *R/AAATransition-class.R
 421099c41b22f086eaf1f0e4dc485ebb *R/Coords-class.R
 82539e713e7324dbd3286a2fea5a7883 *R/Summary-methods.R
@@ -20,7 +20,7 @@ dafe84d34bb1460e2233c30d1c3a5cfb *R/geoCorrection.R
 e4510a5d2722ee56ec252f0acd2cc26c *R/pathInc.R
 f6e7354ec266b5a4529ef1c5c93139af *R/probPassage.R
 6f81525b496160329a74fcd043073736 *R/rSPdistance.R
-786bf5929261a0d2c1f7f26fd2a149eb *R/rasterFromTransition.R
+8f31bc60a598fe06b600a97cd83a3535 *R/rasterFromTransition.R
 de2aaeaba9e6320d2b7ef5f4139422fe *R/shortestPath.R
 1a4af553ce3999c63e3dc77eb68aa57e *R/show.R
 74a2b0758d55d48e433539da5147a9b8 *R/stack.R
@@ -61,6 +61,7 @@ bfb05c37dd54a70743dad7fa22342659 *man/overlap.Rd
 94ae866e68737b2a657b3e6f8c3f1534 *man/passage.Rd
 bd5c6949b9be5607beab02d0ad9f1f74 *man/pathInc.Rd
 ecb81540b2b31d8914bf4c485dc7dc75 *man/rSPDistance.Rd
+39e4a58c71e8bf90ad2f2d9e2ec578ff *man/rasterFromTransition.Rd
 46b9da7e6a12e4f31da04705de7eb6cb *man/shortestPath.Rd
 f69be2a4596d471e5a033d5581af4006 *man/sumReciprocal.Rd
 d95ff0f1566d350bc66e31ce9e5fc787 *man/transition.Rd

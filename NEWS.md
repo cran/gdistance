@@ -1,3 +1,8 @@
+gdistance 1.3-1 (2020-02-28)
+=========================
+### BUG FIXES 
+* export method `raster,TransitionLayer-method`
+
 gdistance 1.3-0 (2020-02-17)
 =========================
 
