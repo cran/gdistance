@@ -37,8 +37,7 @@
 #'  Transactions on Knowledge and Data Engineering, 19(3), 355-369.
 #' 
 #' McRae, B.H. 2006. Isolation by resistance. Evolution 60(8), 1551-1561.
-#' 
-#' \url{http://www.circuitscape.org}
+#' \url{https://circuitscape.org/}
 #' 
 #' @author Jacob van Etten
 #' @seealso \code{\link{geoCorrection}}
@@ -60,6 +59,7 @@
 #' commuteDistance(tr, sP1)
 #' 
 #' @exportMethod commuteDistance
+#' @importFrom methods is
 setGeneric("commuteDistance", 
            function(x, coords) standardGeneric("commuteDistance"))
 
@@ -80,7 +80,7 @@ setMethod("commuteDistance",
 )
 
 .rD <- function(x, coords){
-  if(class(transitionMatrix(x)) != "dsCMatrix"){
+  if(isFALSE(is(transitionMatrix(x), "dsCMatrix"))){
     stop("symmetric transition matrix required",
          "(dsCMatrix) in TransitionLayer object x")}
   coords <- .coordsToMatrix(coords)
