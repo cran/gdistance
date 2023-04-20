@@ -217,9 +217,9 @@ cor(genDist,geoDist)
 cor(genDist,cosDist)
 cor(genDist,resDist)
 
-## ----gdistance-26-------------------------------------------------------------
-origin <- unlist(popCoord[22,c("x","y")])
-pI <- pathInc(trC, origin=origin, from=pC, 
-  functions=list(overlap))
-cor(genDist,pI[[1]])
+## ----gdistance-26, eval = FALSE-----------------------------------------------
+#  origin <- unlist(popCoord[22,c("x","y")])
+#  pI <- pathInc(trC, origin=origin, from=pC,
+#    functions=list(overlap))
+#  cor(genDist,pI[[1]])
 
