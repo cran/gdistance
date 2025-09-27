@@ -1,7 +1,7 @@
 Package: gdistance
 Type: Package
 Title: Distances and Routes on Geographical Grids
-Version: 1.6.4
+Version: 1.6.5
 Authors@R: c(
         person("Jacob", "van Etten", role = c("aut"),
           comment = c(ORCID = "0000-0001-7554-2558")),
@@ -29,13 +29,13 @@ Depends: R (>= 3.2.0), raster (>= 1.9-19), methods, igraph (>= 0.7.0),
         Matrix
 Imports: sp, stats, terra
 Suggests: knitr, markdown, rmarkdown, testthat (>= 2.1.0)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2023-06-19 20:47:27 UTC; andrewjmarx
-Author: Jacob van Etten [aut] (<https://orcid.org/0000-0001-7554-2558>),
-  Kauê de Sousa [ctb] (<https://orcid.org/0000-0002-7571-7845>),
-  Andrew Marx [cre, ctb] (<https://orcid.org/0000-0002-7456-1631>)
+Packaged: 2025-09-27 18:33:31 UTC; andrewjmarx
+Author: Jacob van Etten [aut] (ORCID: <https://orcid.org/0000-0001-7554-2558>),
+  Kauê de Sousa [ctb] (ORCID: <https://orcid.org/0000-0002-7571-7845>),
+  Andrew Marx [cre, ctb] (ORCID: <https://orcid.org/0000-0002-7456-1631>)
 Maintainer: Andrew Marx <ajm.rpackages@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-06-19 21:20:02 UTC
+Date/Publication: 2025-09-27 19:30:02 UTC

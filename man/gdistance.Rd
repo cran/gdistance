@@ -2,8 +2,8 @@
 % Please edit documentation in R/gdistance.R
 \docType{package}
 \name{gdistance}
-\alias{gdistance}
 \alias{gdistance-package}
+\alias{gdistance}
 \title{Distances and Routes on Geographical Grids}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}

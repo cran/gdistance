@@ -177,11 +177,11 @@ AtoB <- shortestPath(Conductance, A, B, output = "SpatialLines")
 BtoA <- shortestPath(Conductance, B, A, output = "SpatialLines")
 
 ## ----fig8plot,include=TRUE, eval=FALSE----------------------------------------
-#  plot(r, xlab = "x coordinate (m)", ylab = "y coordinate (m)", legend.lab = "Altitude (masl)")
-#  lines(AtoB, col = "red", lwd = 2)
-#  lines(BtoA, col = "blue")
-#  text(A[1] - 10, A[2] - 10, "A")
-#  text(B[1] + 10, B[2] + 10, "B")
+# plot(r, xlab = "x coordinate (m)", ylab = "y coordinate (m)", legend.lab = "Altitude (masl)")
+# lines(AtoB, col = "red", lwd = 2)
+# lines(BtoA, col = "blue")
+# text(A[1] - 10, A[2] - 10, "A")
+# text(B[1] + 10, B[2] + 10, "B")
 
 ## ----fig8, fig=TRUE, echo=FALSE, height=6, fig.cap="Fig. 9. Quickest hiking routes on Maunga Whau between A and B (A to B is red, B to A is blue). (Coordinate system is the New Zealand Map Grid.)"----
 par(mar=c(4, 4, 1, 6) + 0.1)

@@ -1,7 +1,7 @@
-2ecef31cfa3892332693de31e9e349f6 *DESCRIPTION
+4451673a0c987cbf9d62db8923300159 *DESCRIPTION
 3081eb8e90815acd55bbf5f586d6c846 *NAMESPACE
-a485106b9ad476029a4b708d7cb7c431 *NEWS.md
-e6b5541be37b1e6d37823ae0297b2586 *R/AAATransition-class.R
+23cba82c448757de0db5495799926e61 *NEWS.md
+b51a83a9a7fccbfc4d098f786cef395e *R/AAATransition-class.R
 5b982542b98142efe2b374dbf3960036 *R/Coords-class.R
 010ce6b4bc179663f2bba7bd8639e485 *R/Summary-methods.R
 235d540c76a46f3026248b92eaaf9304 *R/Transition-extract-replace.R
@@ -27,14 +27,14 @@ e125d8a60407e4ebab14d504463e9854 *R/shortestPath.R
 eed1ee7e233c0a2532ea83a06ad47c98 *R/sumT.R
 77d85cc472c103bfd93fff1198a07306 *R/summary.R
 bc9d4895fc9ce1fdc6356fd25947854b *R/transition.R
-0c6ad5b3446721162c89589e8077ab1c *build/partial.rdb
-47bdc5fa1579f646db40a0254b35b656 *build/vignette.rds
+1bf18d9c216b8d95033f0bd2fe2906b2 *build/partial.rdb
+ce21f5d8f6243a22b7321f85bbf23bb8 *build/vignette.rds
 4ddb0aae326a32fdb1d282a4982f5810 *data/genDist.RData
 7588eaf113f539da74e3fd8c09cbdd4d *data/popCoord.RData
 0fa26e368ab06436ecfc5b65213bdf61 *inst/CITATION
-e1bae9734f4fb68ae09762d3ae7af9bb *inst/doc/Overview.R
+90fcc17288a3f022e6be3f12794180bc *inst/doc/Overview.R
 918b8edc6b5f25ac0defb3562b785bb2 *inst/doc/Overview.Rmd
-c8af9518bffdfd1c96a73ced6ffaf307 *inst/doc/Overview.html
+ba983aa9035fff707f10feebb09596b4 *inst/doc/Overview.html
 340cdbfc086bbf4540b0c14533ff9a82 *inst/external/Europe.grd
 92464a24f2ea19512becbc8ae5657eb9 *inst/external/Europe.gri
 84a77e50b778883bb8943d7bf1ec53f6 *inst/external/maungawhau.grd
@@ -45,7 +45,7 @@ b9564ddd59a06782310989e8f33db55e *inst/paper/jsslogo.jpg
 38003391c318a5cf9526010ccd9ecef7 *man/ArithMath-methods.Rd
 3409693e297af6e59250ac21eac1df61 *man/Coords-class.Rd
 7ed3fcf20c250e3b5dcafe9a9c7a32e9 *man/Summary-methods.Rd
-ed977a1a3d21bcc3f84cb93e1d9ea0ab *man/Transition-classes.Rd
+7118782306b18de3ef86a703e07522f3 *man/Transition-classes.Rd
 9b7c0a606c207b0312e842ce21d9308c *man/Transition-extract-replace.Rd
 a1218966e624e5a20722e6143f97c024 *man/Transition-slots.Rd
 556ebf6a3a72addda537bb002d63e830 *man/accCost.Rd
@@ -54,7 +54,7 @@ b8d4243e4a13ad5073ad1d87aae45c07 *man/commuteDistance-methods.Rd
 796700f39a033379192a87eab2530142 *man/costDistance-methods.Rd
 b55fbc282f12d8e6bd19cf6e7632cf82 *man/figures/logo.png
 dfa24529974581ae3f6acd5f9b1fdb9c *man/figures/logo.svg
-79b3a716571a6b155e00a72ab9739ee8 *man/gdistance.Rd
+e71adbe1ecdad0511e552f3e60b7adec *man/gdistance.Rd
 017cca0e54d3ea431229872651baa8b7 *man/genDist.Rd
 bba991f0e72d0c047d032852b799a5e4 *man/geoCorrection.Rd
 4b999d47c93196ed7058a0381e8f5d07 *man/normalize.Rd
@@ -67,5 +67,5 @@ f96235faf9a14a18768d0deae45c509c *man/shortestPath.Rd
 2f8f7a4bef0a064625f8654a8c1c14db *man/sumReciprocal.Rd
 dab3bfea6c1f959ab9a4015c83300441 *man/transition.Rd
 918b8edc6b5f25ac0defb3562b785bb2 *vignettes/Overview.Rmd
-0df7bd179a93aecef8fea4ebe7199f79 *vignettes/gdistance1.bib
+8d0338106415c434271256a1688a5c49 *vignettes/gdistance1.bib
 b55fbc282f12d8e6bd19cf6e7632cf82 *vignettes/logo.png

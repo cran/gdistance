@@ -68,7 +68,7 @@ Objects can be created by calls of the form
 
 \section{Extends}{
 
-Class \code{\linkS4class{Raster}}
+Class \code{\link[raster]{Raster-class}}
 }
 
 \examples{
